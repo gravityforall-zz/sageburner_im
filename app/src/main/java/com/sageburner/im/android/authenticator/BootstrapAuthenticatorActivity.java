@@ -85,7 +85,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     @Inject Bus bus;
 
     @InjectView(id.et_email) protected AutoCompleteTextView emailText;
-    @InjectView(id.et_password) protected EditText passwordText;
+    @InjectView(id.et_choose_password) protected EditText passwordText;
     @InjectView(id.b_signin) protected Button signInButton;
 
     private final TextWatcher watcher = validationTextWatcher();

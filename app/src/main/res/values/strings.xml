@@ -24,7 +24,7 @@
 
     <!-- AuthenticatorActivity -->
     <string name="label_email_address">Email Address</string>
-    <string name="label_password">Password</string>
+    <string name="label_password">password</string>
     <string name="label_sign_in">Sign In</string>
     <string name="message_signing_in">Signing in…</string>
     <string name="blank_field_warning">Please populate this field</string>
@@ -43,6 +43,13 @@
     <string name="navigation_drawer_open">Drawer Open</string>
     <string name="navigation_drawer_close">Drawer Close</string>
     <string name="title_home">Home</string>
+    <string name="label_user_name">username</string>
+    <string name="label_enter_email">enter your email address</string>
+    <string name="label_choose_password">please choose a password</string>
+    <string name="label_reenter_password">please re-enter your password</string>
+    <string name="label_register">register</string>
+    <string name="label_login">login</string>
+    <string name="label_send">send</string>
 
 
 </resources>
