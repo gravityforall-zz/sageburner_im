@@ -1,27 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingBottom="5dp"
-              android:paddingLeft="10dp"
-              android:paddingRight="10dp"
-              android:paddingTop="5dp" >
-
-    <ImageView
-            android:id="@+id/iv_select_contact_separator"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:src="#ff7f7f7f"/>
-
-
-        <TextView
-                android:id="@+id/tv_select_contact_details"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/table_text_selector" />
-
-</LinearLayout>
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:choiceMode="singleChoice"
+          android:divider="@color/navigation_drawer_item_separator"
+          android:dividerHeight="1dp"
+          android:background="#1f1f1f"
+          tools:context="com.sageburner.im.android.ui.NavigationDrawerFragment" />

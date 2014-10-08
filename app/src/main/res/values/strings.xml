@@ -50,6 +50,8 @@
     <string name="label_register">register</string>
     <string name="label_login">login</string>
     <string name="label_send">send</string>
+    <string name="label_or">or</string>
+    <string name="label_cancel">cancel</string>
 
 
 </resources>

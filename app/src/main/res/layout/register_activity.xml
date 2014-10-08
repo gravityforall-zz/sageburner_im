@@ -6,18 +6,6 @@
     android:background="@drawable/main_background"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/tv_signup"
-        style="@style/ShadowText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/stripe_repeat"
-        android:gravity="center"
-        android:padding="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/text"
-        android:textColorLink="@color/text_link" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -41,7 +29,7 @@
                 android:paddingRight="5dp"
                 android:text="@string/label_enter_email"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text" android:id="@+id/"/>
+                android:textColor="@color/text" android:id="@+id/tv_enter_email"/>
 
             <AutoCompleteTextView
                 android:id="@+id/et_enter_email"
@@ -61,7 +49,7 @@
                 android:paddingTop="10dp"
                 android:text="@string/label_choose_password"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text" android:id="@+id/"/>
+                android:textColor="@color/text" android:id="@+id/tv_choose_password"/>
 
             <EditText
                 android:id="@+id/et_choose_password"
@@ -74,7 +62,8 @@
                       android:paddingBottom="5dp" android:paddingLeft="5dp" android:paddingRight="5dp"
                       android:paddingTop="10dp" android:text="@string/label_reenter_password"
                       android:textAppearance="?android:attr/textAppearanceSmall" android:textColor="@color/text"
-                      android:id="@+id/textView"/>
+                      android:id="@+id/tv_reenter_password"/>
+
             <EditText style="@style/SignInEditText" android:id="@+id/et_reenter_password" android:imeOptions="actionDone"
                       android:inputType="textPassword" android:password="true" android:layout_width="match_parent"
                       android:layout_height="wrap_content"/>
@@ -92,6 +81,18 @@
                 android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_or"
+                    android:id="@+id/textView" android:layout_gravity="center" android:layout_marginTop="15dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_cancel"
+                    android:id="@+id/textView2" android:layout_gravity="center" android:layout_marginTop="15dp"
+                    android:clickable="true" android:onClick="loadLoginActivity"
+                    android:textColor="@color/button_background_enabled_end"/>
         </LinearLayout>
     </ScrollView>
 

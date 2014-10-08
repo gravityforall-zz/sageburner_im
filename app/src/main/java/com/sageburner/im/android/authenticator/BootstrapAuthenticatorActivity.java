@@ -86,7 +86,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
     @InjectView(id.et_email) protected AutoCompleteTextView emailText;
     @InjectView(id.et_choose_password) protected EditText passwordText;
-    @InjectView(id.b_signin) protected Button signInButton;
+    @InjectView(id.b_login) protected Button signInButton;
 
     private final TextWatcher watcher = validationTextWatcher();
 
@@ -166,9 +166,9 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
         emailText.addTextChangedListener(watcher);
         passwordText.addTextChangedListener(watcher);
 
-        final TextView signUpText = (TextView) findViewById(id.tv_signup);
-        signUpText.setMovementMethod(LinkMovementMethod.getInstance());
-        signUpText.setText(Html.fromHtml(getString(string.signup_link)));
+        //final TextView signUpText = (TextView) findViewById(id.tv_signup);
+        //signUpText.setMovementMethod(LinkMovementMethod.getInstance());
+        //signUpText.setText(Html.fromHtml(getString(string.signup_link)));
     }
 
     private List<String> userEmailAccounts() {
@@ -378,5 +378,27 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                         string.message_auth_failed);
             }
         }
+    }
+
+    /**
+     * Handles onClick event on the register link on the login page.
+     * <p/>
+     * Specified by android:onClick="loadRegisterActivity" in the layout xml
+     *
+     * @param view
+     */
+    public void loadRegisterActivity(final View view) {
+        setContentView(layout.register_activity);
+    }
+
+    /**
+     * Handles onClick event on the cancel link on the register page.
+     * <p/>
+     * Specified by android:onClick="loadLoginActivity" in the layout xml
+     *
+     * @param view
+     */
+    public void loadLoginActivity(final View view) {
+        setContentView(layout.login_activity);
     }
 }

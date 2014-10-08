@@ -6,6 +6,7 @@
     android:background="@drawable/main_background"
     android:orientation="vertical" >
 
+    <!--
     <TextView
         android:id="@+id/tv_signup"
         style="@style/ShadowText"
@@ -17,6 +18,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/text"
         android:textColorLink="@color/text_link" />
+        -->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,7 +43,7 @@
                 android:paddingRight="5dp"
                 android:text="@string/label_user_name"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text" android:id="@+id/"/>
+                android:textColor="@color/text" android:id="@+id/tv_email"/>
 
             <AutoCompleteTextView
                 android:id="@+id/et_email"
@@ -49,7 +51,7 @@
                 android:completionThreshold="1"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
-                android:nextFocusDown="@+id/et_choose_password" />
+                android:nextFocusDown="@+id/actv_email" />
 
             <TextView
                 style="@style/ShadowText"
@@ -61,7 +63,8 @@
                 android:paddingTop="10dp"
                 android:text="@string/label_password"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="@color/text" />
+                android:textColor="@color/text"
+                android:id="@+id/tv_choose_password"/>
 
             <EditText
                 android:id="@+id/et_choose_password"
@@ -84,6 +87,18 @@
                 android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_or"
+                    android:id="@+id/textView" android:layout_gravity="center" android:layout_marginTop="15dp"/>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_register"
+                    android:id="@+id/textView2" android:layout_gravity="center" android:layout_marginTop="15dp"
+                    android:clickable="true" android:onClick="loadRegisterActivity"
+                    android:textColor="@color/button_background_enabled_end"/>
         </LinearLayout>
     </ScrollView>
 
