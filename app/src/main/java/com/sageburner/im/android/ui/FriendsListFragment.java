@@ -84,11 +84,11 @@ public class FriendsListFragment extends ItemListFragment<User> {
     }
 
     public void onListItemClick(final ListView l, final View v, final int position, final long id) {
-        final User user = ((User) l.getItemAtPosition(position));
+        //final User user = ((User) l.getItemAtPosition(position));
+        //startActivity(new Intent(getActivity(), ConversationActivity.class).putExtra(USER, user));
 
-        startActivity(new Intent(getActivity(), ConversationActivity.class).putExtra(USER, user));
-
-        //v.
+        ViewPager pager = (ViewPager) getActivity().findViewById(R.id.vp_pages);
+        pager.setCurrentItem(1, true);
     }
 
     @Override

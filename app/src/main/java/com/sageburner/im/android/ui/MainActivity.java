@@ -41,7 +41,8 @@ public class MainActivity extends BootstrapFragmentActivity {
 
     @Inject protected LogoutService logoutService;
 
-    private boolean userHasAuthenticated = false;
+    //private boolean userHasAuthenticated = false;
+    private boolean userHasAuthenticated = true;
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
