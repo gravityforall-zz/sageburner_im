@@ -22,7 +22,7 @@ import javax.inject.Inject;
 
 import static com.sageburner.im.android.core.Constants.Extra.USER;
 
-public class UserListFragment extends ItemListFragment<User> {
+public class ConversationFragment extends ItemListFragment<User> {
 
     @Inject protected BootstrapServiceProvider serviceProvider;
     @Inject protected LogoutService logoutService;
@@ -89,9 +89,9 @@ public class UserListFragment extends ItemListFragment<User> {
     }
 
     public void onListItemClick(final ListView l, final View v, final int position, final long id) {
-        final User user = ((User) l.getItemAtPosition(position));
+        //final User user = ((User) l.getItemAtPosition(position));
 
-        startActivity(new Intent(getActivity(), UserActivity.class).putExtra(USER, user));
+        //startActivity(new Intent(getActivity(), ConversationActivity.class).putExtra(USER, user));
     }
 
     @Override
@@ -107,6 +107,6 @@ public class UserListFragment extends ItemListFragment<User> {
 
     @Override
     protected SingleTypeAdapter<User> createAdapter(final List<User> items) {
-        return new UserListAdapter(getActivity().getLayoutInflater(), items);
+        return new ConversationAdapter(getActivity().getLayoutInflater(), items);
     }
 }

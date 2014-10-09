@@ -75,7 +75,7 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/button_background_states"
                 android:gravity="center"
-                android:onClick="handleLogin"
+                android:onClick="handleRegister"
                 android:padding="10dp"
                 android:text="@string/label_register"
                 android:textColor="@color/text"

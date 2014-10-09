@@ -13,14 +13,7 @@ import com.sageburner.im.android.core.RestAdapterRequestInterceptor;
 import com.sageburner.im.android.core.RestErrorHandler;
 import com.sageburner.im.android.core.TimerService;
 import com.sageburner.im.android.core.UserAgentProvider;
-import com.sageburner.im.android.ui.BootstrapTimerActivity;
-import com.sageburner.im.android.ui.CheckInsListFragment;
-import com.sageburner.im.android.ui.MainActivity;
-import com.sageburner.im.android.ui.NavigationDrawerFragment;
-import com.sageburner.im.android.ui.NewsActivity;
-import com.sageburner.im.android.ui.NewsListFragment;
-import com.sageburner.im.android.ui.UserActivity;
-import com.sageburner.im.android.ui.UserListFragment;
+import com.sageburner.im.android.ui.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
@@ -43,14 +36,10 @@ import retrofit.converter.GsonConverter;
                 BootstrapApplication.class,
                 BootstrapAuthenticatorActivity.class,
                 MainActivity.class,
-                BootstrapTimerActivity.class,
-                CheckInsListFragment.class,
                 NavigationDrawerFragment.class,
-                NewsActivity.class,
-                NewsListFragment.class,
-                UserActivity.class,
-                UserListFragment.class,
-                TimerService.class
+                FriendsListFragment.class,
+                ConversationActivity.class,
+                ConversationFragment.class,
         }
 )
 public class BootstrapModule {

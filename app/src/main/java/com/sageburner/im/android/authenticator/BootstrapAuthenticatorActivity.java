@@ -234,7 +234,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     }
 
     /**
-     * Handles onClick event on the Submit button. Sends username/password to
+     * Handles onClick event on the login button. Sends username/password to
      * the server for authentication.
      * <p/>
      * Specified by android:onClick="handleLogin" in the layout xml
@@ -400,5 +400,62 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
      */
     public void loadLoginActivity(final View view) {
         setContentView(layout.login_activity);
+    }
+
+    /**
+     * Handles onClick event on the register button. Sends username/password to
+     * the server for registration.
+     * <p/>
+     * Specified by android:onClick="handleRegister" in the layout xml
+     *
+     * @param view
+     */
+    public void handleRegister(final View view) {
+        if (authenticationTask != null) {
+            return;
+        }
+
+        if (requestNewAccount) {
+            email = emailText.getText().toString();
+        }
+
+        password = passwordText.getText().toString();
+        showProgress();
+
+        authenticationTask = new SafeAsyncTask<Boolean>() {
+            public Boolean call() throws Exception {
+
+                final String query = String.format("%s=%s&%s=%s",
+                        PARAM_USERNAME, email, PARAM_PASSWORD, password);
+
+                User loginResponse = bootstrapService.authenticate(email, password);
+                token = loginResponse.getSessionToken();
+
+                return true;
+            }
+
+            @Override
+            protected void onException(final Exception e) throws RuntimeException {
+                // Retrofit Errors are handled inside of the {
+                if(!(e instanceof RetrofitError)) {
+                    final Throwable cause = e.getCause() != null ? e.getCause() : e;
+                    if(cause != null) {
+                        Toaster.showLong(BootstrapAuthenticatorActivity.this, cause.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onSuccess(final Boolean authSuccess) {
+                onAuthenticationResult(authSuccess);
+            }
+
+            @Override
+            protected void onFinally() throws RuntimeException {
+                hideProgress();
+                authenticationTask = null;
+            }
+        };
+        authenticationTask.execute();
     }
 }

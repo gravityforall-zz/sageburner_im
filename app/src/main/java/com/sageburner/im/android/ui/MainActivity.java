@@ -11,10 +11,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.R;
+import com.sageburner.im.android.authenticator.LogoutService;
 import com.sageburner.im.android.core.BootstrapService;
 import com.sageburner.im.android.events.NavItemSelectedEvent;
 import com.sageburner.im.android.util.Ln;
@@ -36,6 +38,8 @@ import butterknife.Views;
 public class MainActivity extends BootstrapFragmentActivity {
 
     @Inject protected BootstrapServiceProvider serviceProvider;
+
+    @Inject protected LogoutService logoutService;
 
     private boolean userHasAuthenticated = false;
 
@@ -182,9 +186,6 @@ public class MainActivity extends BootstrapFragmentActivity {
             case android.R.id.home:
                 //menuDrawer.toggleMenu();
                 return true;
-            case R.id.timer:
-                navigateToTimer();
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -202,13 +203,22 @@ public class MainActivity extends BootstrapFragmentActivity {
 
         switch(event.getItemPosition()) {
             case 0:
-                // Home
-                // do nothing as we're already on the home screen.
-                break;
-            case 1:
-                // Timer
-                navigateToTimer();
+                logout();
                 break;
         }
+    }
+
+    private void logout() {
+        logoutService.logout(new Runnable() {
+            @Override
+            public void run() {
+                // Calling a refresh will force the service to look for a logged in user
+                // and when it finds none the user will be requested to log in again.
+                //forceRefresh();
+                setContentView(R.layout.login_activity);
+                //View view = findViewById(R.id.navigation_drawer);
+                //view.invalidate();
+            }
+        });
     }
 }
