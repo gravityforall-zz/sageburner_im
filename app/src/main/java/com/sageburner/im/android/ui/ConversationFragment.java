@@ -27,7 +27,6 @@ public class ConversationFragment extends ItemListFragment<User> {
     @Inject protected BootstrapServiceProvider serviceProvider;
     @Inject protected LogoutService logoutService;
 
-
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +46,6 @@ public class ConversationFragment extends ItemListFragment<User> {
 
         listView.setFastScrollEnabled(true);
         listView.setDividerHeight(0);
-
-        getListAdapter().addHeader(activity.getLayoutInflater()
-                .inflate(R.layout.user_list_item_labels, null));
     }
 
     @Override
@@ -107,6 +103,6 @@ public class ConversationFragment extends ItemListFragment<User> {
 
     @Override
     protected SingleTypeAdapter<User> createAdapter(final List<User> items) {
-        return new ConversationAdapter(getActivity().getLayoutInflater(), items);
+        return new ConversationListAdapter(getActivity().getLayoutInflater(), items);
     }
 }

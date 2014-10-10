@@ -9,6 +9,15 @@
               android:paddingRight="10dp"
               android:paddingTop="5dp" >
 
+    <ImageView
+            android:id="@+id/iv_avatar"
+            style="@style/AvatarMedium"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="15dp"
+            android:contentDescription="@string/avatar"
+            />
+
     <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -16,22 +25,13 @@
             android:orientation="vertical" >
 
         <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/tv_message"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/table_text_selector" />
 
     </LinearLayout>
-
-    <ImageView
-            android:id="@+id/iv_avatar"
-            style="@style/AvatarMedium"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="15dp"
-            android:contentDescription="@string/avatar"
-            />
 
 </LinearLayout>

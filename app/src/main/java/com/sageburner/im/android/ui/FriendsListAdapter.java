@@ -24,8 +24,6 @@ public class FriendsListAdapter extends AlternatingColorListAdapter<User> {
      */
     public FriendsListAdapter(final LayoutInflater inflater, final List<User> items) {
         super(R.layout.user_list_item, inflater, items);
-
-        //setItems(items);
     }
 
     /**
