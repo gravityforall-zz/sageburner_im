@@ -87,7 +87,7 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<User> {
                 .placeholder(R.drawable.gravatar_icon)
                 .into((ImageView)convertView.findViewById(R.id.iv_avatar));
         //convertView.findViewById(R.id.iv_avatar).setBackgroundColor(Color.BLUE);
-        ((TextView)convertView.findViewById(R.id.tv_message)).setText("");
+        ((TextView)convertView.findViewById(R.id.tv_message)).setText("Whimmy Wham Wham Wozzle!  Let's see if we can get this bad boy to line wrap!  SHAZAAM!");
 
         return convertView;
     }
