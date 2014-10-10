@@ -102,7 +102,7 @@ public class ConversationFragment extends ItemListFragment<User> {
     }
 
     @Override
-    protected SingleTypeAdapter<User> createAdapter(final List<User> items) {
+    protected AlternatingColorListAdapter<User> createAdapter(final List<User> items) {
         return new ConversationListAdapter(getActivity().getLayoutInflater(), items);
     }
 }
