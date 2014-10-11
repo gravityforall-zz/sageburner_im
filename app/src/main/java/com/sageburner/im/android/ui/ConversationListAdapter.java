@@ -1,17 +1,15 @@
 
 package com.sageburner.im.android.ui;
 
-import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.sageburner.im.android.BootstrapApplication;
 import com.sageburner.im.android.R;
-import com.sageburner.im.android.R.drawable;
+import com.sageburner.im.android.core.ConversationMessageItem;
 import com.sageburner.im.android.core.ConversationViewHolder;
 import com.sageburner.im.android.core.User;
 import com.squareup.picasso.Picasso;
@@ -21,7 +19,7 @@ import java.util.List;
 /**
  * Adapter to
  */
-public class ConversationListAdapter extends AlternatingColorListAdapter<User> {
+public class ConversationListAdapter extends AlternatingColorListAdapter<ConversationMessageItem> {
 
     private final LayoutInflater inflater;
 
@@ -29,7 +27,7 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<User> {
      * @param inflater
      * @param items
      */
-    public ConversationListAdapter(final LayoutInflater inflater, final List<User> items) {
+    public ConversationListAdapter(final LayoutInflater inflater, final List<ConversationMessageItem> items) {
         super(R.layout.user_list_item, inflater, items);
 
         this.inflater = inflater;
@@ -48,15 +46,15 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<User> {
     }
 
     @Override
-    protected void update(final int position, final User user) {
-        super.update(position, user);
+    protected void update(final int position, final ConversationMessageItem conversationMessageItem) {
+        super.update(position, conversationMessageItem);
 
         Picasso.with(BootstrapApplication.getInstance())
-                .load(user.getAvatarUrl())
+                .load(conversationMessageItem.getAvatarUrl())
                 .placeholder(R.drawable.gravatar_icon)
                 .into(imageView(0));
 
-        setText(1, String.format("%1$s %2$s", user.getFirstName(), user.getLastName()));
+        setText(1, String.format("%1$s %2$s", conversationMessageItem.getToUser().getFirstName(), conversationMessageItem.getToUser().getLastName()));
 
     }
 

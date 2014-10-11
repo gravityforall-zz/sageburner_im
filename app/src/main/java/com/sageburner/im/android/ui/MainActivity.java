@@ -192,11 +192,6 @@ public class MainActivity extends BootstrapFragmentActivity {
         }
     }
 
-    private void navigateToTimer() {
-        final Intent i = new Intent(this, BootstrapTimerActivity.class);
-        startActivity(i);
-    }
-
     @Subscribe
     public void onNavigationItemSelected(NavItemSelectedEvent event) {
 

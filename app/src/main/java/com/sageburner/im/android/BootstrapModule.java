@@ -38,8 +38,7 @@ import retrofit.converter.GsonConverter;
                 MainActivity.class,
                 NavigationDrawerFragment.class,
                 FriendsListFragment.class,
-                ConversationActivity.class,
-                ConversationFragment.class,
+                ConversationFragment.class
         }
 )
 public class BootstrapModule {

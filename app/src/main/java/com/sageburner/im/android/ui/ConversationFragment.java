@@ -1,8 +1,6 @@
 package com.sageburner.im.android.ui;
 
-import android.accounts.OperationCanceledException;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.view.View;
@@ -12,17 +10,14 @@ import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
-import com.sageburner.im.android.core.User;
-import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.sageburner.im.android.core.ConversationMessageItem;
 
 import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import static com.sageburner.im.android.core.Constants.Extra.USER;
-
-public class ConversationFragment extends ItemListFragment<User> {
+public class ConversationFragment extends ItemListFragment<ConversationMessageItem> {
 
     @Inject protected BootstrapServiceProvider serviceProvider;
     @Inject protected LogoutService logoutService;
@@ -54,31 +49,31 @@ public class ConversationFragment extends ItemListFragment<User> {
     }
 
     @Override
-    public Loader<List<User>> onCreateLoader(final int id, final Bundle args) {
-        final List<User> initialItems = items;
-        return new ThrowableLoader<List<User>>(getActivity(), items) {
+    public Loader<List<ConversationMessageItem>> onCreateLoader(final int id, final Bundle args) {
+        final List<ConversationMessageItem> initialItems = items;
+        return new ThrowableLoader<List<ConversationMessageItem>>(getActivity(), items) {
             @Override
-            public List<User> loadData() throws Exception {
+            public List<ConversationMessageItem> loadData() throws Exception {
 
-                try {
-                    List<User> latest = null;
+//                try {
+                    List<ConversationMessageItem> latest = null;
 
-                    if (getActivity() != null) {
-                        latest = serviceProvider.getService(getActivity()).getUsers();
-                    }
+//                    if (getActivity() != null) {
+//                        latest = serviceProvider.getService(getActivity()).getUsers();
+//                    }
 
                     if (latest != null) {
                         return latest;
                     } else {
                         return Collections.emptyList();
                     }
-                } catch (final OperationCanceledException e) {
-                    final Activity activity = getActivity();
-                    if (activity != null) {
-                        activity.finish();
-                    }
-                    return initialItems;
-                }
+//                } catch (final OperationCanceledException e) {
+//                    final Activity activity = getActivity();
+//                    if (activity != null) {
+//                        activity.finish();
+//                    }
+//                    return initialItems;
+//                }
             }
         };
 
@@ -86,12 +81,10 @@ public class ConversationFragment extends ItemListFragment<User> {
 
     public void onListItemClick(final ListView l, final View v, final int position, final long id) {
         //final User user = ((User) l.getItemAtPosition(position));
-
-        //startActivity(new Intent(getActivity(), ConversationActivity.class).putExtra(USER, user));
     }
 
     @Override
-    public void onLoadFinished(final Loader<List<User>> loader, final List<User> items) {
+    public void onLoadFinished(final Loader<List<ConversationMessageItem>> loader, final List<ConversationMessageItem> items) {
         super.onLoadFinished(loader, items);
 
     }
@@ -102,7 +95,7 @@ public class ConversationFragment extends ItemListFragment<User> {
     }
 
     @Override
-    protected AlternatingColorListAdapter<User> createAdapter(final List<User> items) {
+    protected AlternatingColorListAdapter<ConversationMessageItem> createAdapter(final List<ConversationMessageItem> items) {
         return new ConversationListAdapter(getActivity().getLayoutInflater(), items);
     }
 }
