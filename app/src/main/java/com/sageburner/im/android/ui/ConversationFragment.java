@@ -11,7 +11,9 @@ import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
 import com.sageburner.im.android.core.ConversationMessageItem;
+import com.sageburner.im.android.core.User;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
             public List<ConversationMessageItem> loadData() throws Exception {
 
 //                try {
-                    List<ConversationMessageItem> latest = null;
+                    List<ConversationMessageItem> latest = createDummyMessages();
 
 //                    if (getActivity() != null) {
 //                        latest = serviceProvider.getService(getActivity()).getUsers();
@@ -77,6 +79,43 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
             }
         };
 
+    }
+
+    private List<ConversationMessageItem> createDummyMessages() {
+        List<ConversationMessageItem> msgList = new ArrayList<ConversationMessageItem>();
+
+        User alice = new User();
+        alice.setFirstName("Alice");
+        alice.setUsername("alice@sageburner.com");
+        User bob = new User();
+        bob.setFirstName("Bob");
+        bob.setUsername("bob@sageburner.com");
+
+        ConversationMessageItem msgItem = new ConversationMessageItem();
+        msgItem.setFromUser(alice);
+        msgItem.setToUser(bob);
+        msgItem.setMessageText("Hello!");
+        msgList.add(msgItem);
+
+        msgItem = new ConversationMessageItem();
+        msgItem.setFromUser(bob);
+        msgItem.setToUser(alice);
+        msgItem.setMessageText("Hi!");
+        msgList.add(msgItem);
+
+        msgItem = new ConversationMessageItem();
+        msgItem.setFromUser(bob);
+        msgItem.setToUser(alice);
+        msgItem.setMessageText("How are you?");
+        msgList.add(msgItem);
+
+        msgItem = new ConversationMessageItem();
+        msgItem.setFromUser(alice);
+        msgItem.setToUser(bob);
+        msgItem.setMessageText("Fine, thanks.");
+        msgList.add(msgItem);
+
+        return msgList;
     }
 
     public void onListItemClick(final ListView l, final View v, final int position, final long id) {
