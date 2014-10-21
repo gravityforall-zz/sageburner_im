@@ -9,14 +9,18 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import android.widget.Button;
+import android.widget.EditText;
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
+import com.sageburner.im.android.authenticator.XMPPService;
 import com.sageburner.im.android.core.BootstrapService;
 import com.sageburner.im.android.events.NavItemSelectedEvent;
 import com.sageburner.im.android.util.Ln;
@@ -27,6 +31,7 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 
 import butterknife.Views;
+import org.jivesoftware.smack.XMPPConnection;
 
 
 /**
@@ -38,8 +43,8 @@ import butterknife.Views;
 public class MainActivity extends BootstrapFragmentActivity {
 
     @Inject protected BootstrapServiceProvider serviceProvider;
-
     @Inject protected LogoutService logoutService;
+    @Inject protected XMPPService xmppService;
 
     //private boolean userHasAuthenticated = false;
     private boolean userHasAuthenticated = true;
@@ -103,13 +108,13 @@ public class MainActivity extends BootstrapFragmentActivity {
                     (DrawerLayout) findViewById(R.id.drawer_layout));
         }
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        //Connect to XMPP server
+        connect();
 
         checkAuth();
-
     }
 
     private boolean isTablet() {
@@ -214,6 +219,31 @@ public class MainActivity extends BootstrapFragmentActivity {
                 setContentView(R.layout.login_activity);
                 //View view = findViewById(R.id.navigation_drawer);
                 //view.invalidate();
+            }
+        });
+    }
+
+    //XMPP Stuff
+    //    @Override
+    //TODO: make this part of ItemListFragment??
+    protected XMPPService getXMPPService() {
+        return xmppService;
+    }
+
+    private void connect() {
+        getXMPPService().connect(new Runnable() {
+            @Override
+            public void run() {
+                //do something?
+            }
+        });
+    }
+
+    private void disconnect() {
+        getXMPPService().disconnect(new Runnable() {
+            @Override
+            public void run() {
+                //do something?
             }
         });
     }

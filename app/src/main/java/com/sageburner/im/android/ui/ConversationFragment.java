@@ -3,15 +3,25 @@ package com.sageburner.im.android.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
+import com.sageburner.im.android.authenticator.XMPPService;
 import com.sageburner.im.android.core.ConversationMessageItem;
 import com.sageburner.im.android.core.User;
+import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.filter.MessageTypeFilter;
+import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smack.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,18 +33,64 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
     @Inject protected BootstrapServiceProvider serviceProvider;
     @Inject protected LogoutService logoutService;
+    @Inject protected XMPPService xmppService;
+
+    //XMPP Stuff
+    private String recipient = "ryan@sageburner.com";
+    private EditText msgInput;
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Injector.inject(this);
+
+        //XMPP Send Button Listener
+        Button send = (Button) this.getActivity().findViewById(R.id.b_send);
+        msgInput = (EditText) this.getActivity().findViewById(R.id.et_input_msg);
+
+        send.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                //String to = recipient;
+                String messageText = msgInput.getText().toString();
+                Log.i("XMPPChatDemoActivity ", "Sending text " + messageText + " to " + recipient);
+
+                ConversationMessageItem convMsgItem = new ConversationMessageItem();
+                convMsgItem.setMessageText(messageText);
+
+                try {
+                    sendMessage(convMsgItem);
+                    items.add(convMsgItem);
+                } catch (Exception e) {
+                    Log.e("XMPPChatDemoActivity ", "Sending text to " + recipient + " failed!");
+                    Log.e("XMPPChatDemoActivity ", e.getMessage());
+                }
+            }
+        });
+
+        //XMPP Incoming Packet Listener
+        PacketFilter filter = new MessageTypeFilter(Message.Type.chat);
+        xmppService.setPacketListener(new PacketListener() {
+            @Override
+            public void processPacket(Packet packet) {
+                Message message = (Message) packet;
+                if (message.getBody() != null) {
+                    String fromName = StringUtils.parseBareAddress(message.getFrom());
+                    Log.i("XMPPChatDemoActivity ", " Text Recieved " + message.getBody() + " from " + fromName);
+
+                    ConversationMessageItem convMsgItem = new ConversationMessageItem();
+                    convMsgItem.setMessageText(message.getBody());
+
+                    items.add(convMsgItem);
+                }
+            }
+        }, filter);
     }
 
     @Override
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(R.string.no_users);
+        setEmptyText(R.string.no_messages);
     }
 
     @Override
@@ -45,6 +101,42 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         listView.setDividerHeight(0);
     }
 
+//    @Override
+    //TODO: make this part of ItemListFragment??
+    protected XMPPService getXMPPService() {
+        return xmppService;
+    }
+
+    private void connect() {
+        getXMPPService().connect(new Runnable() {
+            @Override
+            public void run() {
+                // Calling a refresh will force the service to...?
+                forceRefresh();
+            }
+        });
+    }
+
+    private void disconnect() {
+        getXMPPService().disconnect(new Runnable() {
+            @Override
+            public void run() {
+                // Calling a refresh will force the service to...?
+                forceRefresh();
+            }
+        });
+    }
+
+    private void sendMessage(ConversationMessageItem convMsgItem) {
+        getXMPPService().sendMessage(convMsgItem, new Runnable() {
+            @Override
+            public void run() {
+                // Calling a refresh will force the service to...?
+                forceRefresh();
+            }
+        });
+    }
+
     @Override
     protected LogoutService getLogoutService() {
         return logoutService;
@@ -52,23 +144,23 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
     @Override
     public Loader<List<ConversationMessageItem>> onCreateLoader(final int id, final Bundle args) {
-        final List<ConversationMessageItem> initialItems = items;
+//        final List<ConversationMessageItem> initialItems = items;
         return new ThrowableLoader<List<ConversationMessageItem>>(getActivity(), items) {
             @Override
             public List<ConversationMessageItem> loadData() throws Exception {
 
 //                try {
-                    List<ConversationMessageItem> latest = createDummyMessages();
+//                    List<ConversationMessageItem> latest = createDummyMessages();
 
 //                    if (getActivity() != null) {
 //                        latest = serviceProvider.getService(getActivity()).getUsers();
 //                    }
 
-                    if (latest != null) {
-                        return latest;
-                    } else {
+//                    if (latest != null) {
+//                        return latest;
+//                    } else {
                         return Collections.emptyList();
-                    }
+//                    }
 //                } catch (final OperationCanceledException e) {
 //                    final Activity activity = getActivity();
 //                    if (activity != null) {
@@ -79,6 +171,26 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
             }
         };
 
+    }
+
+    public void onListItemClick(final ListView l, final View v, final int position, final long id) {
+        //final User user = ((User) l.getItemAtPosition(position));
+        //Object object = l.getItemAtPosition(position);
+    }
+
+    @Override
+    public void onLoadFinished(final Loader<List<ConversationMessageItem>> loader, final List<ConversationMessageItem> items) {
+        super.onLoadFinished(loader, items);
+    }
+
+    @Override
+    protected int getErrorMessage(final Exception exception) {
+        return R.string.error_loading_users;
+    }
+
+    @Override
+    protected AlternatingColorListAdapter<ConversationMessageItem> createAdapter(final List<ConversationMessageItem> items) {
+        return new ConversationListAdapter(getActivity().getLayoutInflater(), items);
     }
 
     private List<ConversationMessageItem> createDummyMessages() {
@@ -116,25 +228,5 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         msgList.add(msgItem);
 
         return msgList;
-    }
-
-    public void onListItemClick(final ListView l, final View v, final int position, final long id) {
-        //final User user = ((User) l.getItemAtPosition(position));
-    }
-
-    @Override
-    public void onLoadFinished(final Loader<List<ConversationMessageItem>> loader, final List<ConversationMessageItem> items) {
-        super.onLoadFinished(loader, items);
-
-    }
-
-    @Override
-    protected int getErrorMessage(final Exception exception) {
-        return R.string.error_loading_users;
-    }
-
-    @Override
-    protected AlternatingColorListAdapter<ConversationMessageItem> createAdapter(final List<ConversationMessageItem> items) {
-        return new ConversationListAdapter(getActivity().getLayoutInflater(), items);
     }
 }

@@ -43,7 +43,7 @@ public final class Constants {
         /**
          * Base URL for all requests
          */
-        public static final String URL_BASE = "https://auth.sageburner.com/sageburner/service/greeting";
+        public static final String URL_BASE = "https://auth.sageburner.com/sageburner/service";
 //        public static final String URL_BASE = "https://api.parse.com";
 
 
@@ -72,7 +72,9 @@ public final class Constants {
         /**
          * PARAMS for auth
          */
-        public static final String PARAM_USERNAME = "username";
+//        public static final String PARAM_USERNAME = "username";
+        //TODO: Fix lame hibernate interface to actually query by username
+        public static final String PARAM_USERNAME = "id";
         public static final String PARAM_PASSWORD = "password";
 
 
@@ -115,6 +117,28 @@ public final class Constants {
         public static final int TIMER_NOTIFICATION_ID = 1000; // Why 1000? Why not? :)
     }
 
+    public static final class XMPP {
+        private XMPP() {}
+
+        /**
+         * XMPP Host
+         */
+        public static final String HOST = "sageburner.com";
+
+        /**
+         * XMPP Port
+         */
+        public static final int PORT = 48999;
+
+        /**
+         * XMPP Username
+         */
+        public static final String USERNAME = "user1";
+
+        /**
+         * XMPP Password
+         */
+        public static final String PASSWORD = "password";
+    }
+
 }
-
-

@@ -36,9 +36,10 @@ public class FriendsListAdapter extends AlternatingColorListAdapter<User> {
 
     @Override
     public long getItemId(final int position) {
-        final String id = getItem(position).getObjectId();
+      /*  final String id = getItem(position).getObjectId();
         return !TextUtils.isEmpty(id) ? id.hashCode() : super
-                .getItemId(position);
+                .getItemId(position);*/
+        return super.getItemId(position);
     }
 
     @Override
@@ -51,12 +52,10 @@ public class FriendsListAdapter extends AlternatingColorListAdapter<User> {
         super.update(position, user);
 
         Picasso.with(BootstrapApplication.getInstance())
-                .load(user.getAvatarUrl())
+                .load("dummy_avatar_url")
                 .placeholder(R.drawable.gravatar_icon)
                 .into(imageView(0));
 
         setText(1, String.format("%1$s %2$s", user.getFirstName(), user.getLastName()));
-
     }
-
 }

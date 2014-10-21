@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.sageburner.im.android.R;
+import com.sageburner.im.android.core.Constants;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.Roster;
@@ -33,11 +34,6 @@ import android.widget.ListView;
  * Created by Ryan on 10/18/2014.
  */
 public class XMPPChatDemoActivity extends Activity {
-
-    public static final String HOST = "sageburner.com";
-    public static final int PORT = 48999;
-    public static final String USERNAME = "user1";
-    public static final String PASSWORD = "password";
 
     private XMPPConnection connection;
     private ArrayList<String> messages = new ArrayList<String>();
@@ -74,7 +70,8 @@ public class XMPPChatDemoActivity extends Activity {
                         messages.add(text);
                         setListAdapter();
                     } catch (Exception e) {
-
+                        Log.e("XMPPChatDemoActivity ", "Sending text to " + to + " failed!");
+                        Log.e("XMPPChatDemoActivity ", e.getMessage());
                     }
                 }
             }
@@ -134,7 +131,7 @@ public class XMPPChatDemoActivity extends Activity {
             @Override
             public void run() {
                 // Create a connection
-                ConnectionConfiguration connConfig = new ConnectionConfiguration(HOST, PORT);
+                ConnectionConfiguration connConfig = new ConnectionConfiguration(Constants.XMPP.HOST, Constants.XMPP.PORT);
                 connConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
 
                 XMPPConnection connection = new XMPPTCPConnection(connConfig);
@@ -147,7 +144,7 @@ public class XMPPChatDemoActivity extends Activity {
                     setConnection(null);
                 }
                 try {
-                    connection.login(USERNAME, PASSWORD);
+                    connection.login(Constants.XMPP.USERNAME, Constants.XMPP.PASSWORD);
                     Log.i("XMPPChatDemoActivity",  "Logged in as" + connection.getUser());
 
                     // Set the status to available
@@ -176,7 +173,7 @@ public class XMPPChatDemoActivity extends Activity {
                         Log.d("XMPPChatDemoActivity", "Presence : " + entryPresence);
                     }
                 } catch (Exception ex) {
-                    Log.e("XMPPChatDemoActivity", "Failed to log in as "+  USERNAME);
+                    Log.e("XMPPChatDemoActivity", "Failed to log in as "+  Constants.XMPP.USERNAME);
                     Log.e("XMPPChatDemoActivity", ex.toString());
                     setConnection(null);
                 }

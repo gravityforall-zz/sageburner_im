@@ -81,7 +81,7 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<Convers
         }
 
         Picasso.with(BootstrapApplication.getInstance())
-                .load(1)
+                .load("dummy_avatar_url")
                 .placeholder(R.drawable.gravatar_icon)
                 .into((ImageView)convertView.findViewById(R.id.iv_avatar));
         //convertView.findViewById(R.id.iv_avatar).setBackgroundColor(Color.BLUE);
