@@ -3,20 +3,15 @@
 package com.sageburner.im.android.ui;
 
 import android.accounts.OperationCanceledException;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-
-import android.widget.Button;
-import android.widget.EditText;
+import butterknife.Views;
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
@@ -29,10 +24,6 @@ import com.sageburner.im.android.util.UIUtils;
 import com.squareup.otto.Subscribe;
 
 import javax.inject.Inject;
-
-import butterknife.Views;
-import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
 
 /**
@@ -112,9 +103,6 @@ public class MainActivity extends BootstrapFragmentActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        //Connect to XMPP server
-        connect();
-
         checkAuth();
     }
 
@@ -144,6 +132,8 @@ public class MainActivity extends BootstrapFragmentActivity {
 
     private void initScreen() {
         if (userHasAuthenticated) {
+            //Connect to XMPP server
+            connect();
 
             Ln.d("Foo");
             final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -222,6 +212,16 @@ public class MainActivity extends BootstrapFragmentActivity {
                 //view.invalidate();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            disconnect();
+        } catch (Exception e) {
+
+        }
     }
 
     //XMPP Stuff

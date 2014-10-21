@@ -84,6 +84,7 @@ public class XMPPService {
             }
 
             try {
+                //log in
                 getXmppConn().login(Constants.XMPP.USERNAME, Constants.XMPP.PASSWORD);
                 Log.i("XMPPChatDemoActivity",  "Logged in as" + xmppConn.getUser());
 
@@ -92,6 +93,7 @@ public class XMPPService {
                 getXmppConn().sendPacket(presence);
                 //setXmppConn(xmppConn);
 
+                //get roster
                 Roster roster = getXmppConn().getRoster();
                 Collection<RosterEntry> entries = roster.getEntries();
                 for (RosterEntry entry : entries) {
@@ -125,8 +127,9 @@ public class XMPPService {
         @Override
         protected void onSuccess(final Boolean connectionSuccess) throws Exception {
             //TODO: implement onSuccess method
+            super.onSuccess(connectionSuccess);
 
-            Ln.d("Connection succeeded!");
+            Ln.d("Connection successful: %s", connectionSuccess);
             onSuccess.run();
         }
 
@@ -159,11 +162,11 @@ public class XMPPService {
         }
 
         @Override
-        protected void onSuccess(final Boolean disconnectedSuccessfully) throws Exception {
+        protected void onSuccess(final Boolean disconnectionSuccess) throws Exception {
             //TODO: implement onSuccess method
-            super.onSuccess(disconnectedSuccessfully);
+            super.onSuccess(disconnectionSuccess);
 
-            Ln.d("Disconnection successful: %s", disconnectedSuccessfully);
+            Ln.d("Disconnection successful: %s", disconnectionSuccess);
             onSuccess.run();
         }
 
@@ -188,26 +191,18 @@ public class XMPPService {
 
         @Override
         public Boolean call() throws Exception {
-            //TODO: implement call method
-
-            //convMsgItem.getMessageText();
-            //Message message = new Message(to, Message.Type.chat);
-            //message.setBody(text);
-            //connection.sendPacket(msg);
-
-            if (5 > 10) {
-                return true;
-            } else {
-                return false;
-            }
+            Message message = new Message(convMsgItem.getToUser().getUsername(), Message.Type.chat);
+            message.setBody(convMsgItem.getMessageText());
+            getXmppConn().sendPacket(message);
+            return true;
         }
 
         @Override
-        protected void onSuccess(final Boolean messageSendSuccessful) throws Exception {
+        protected void onSuccess(final Boolean messageSendSuccess) throws Exception {
             //TODO: implement onSuccess method
-            super.onSuccess(messageSendSuccessful);
+            super.onSuccess(messageSendSuccess);
 
-            Ln.d("Message send successful: %s", messageSendSuccessful);
+            Ln.d("Message send successful: %s", messageSendSuccess);
             onSuccess.run();
         }
 
