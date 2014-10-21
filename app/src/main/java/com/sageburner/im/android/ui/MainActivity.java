@@ -32,6 +32,7 @@ import javax.inject.Inject;
 
 import butterknife.Views;
 import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
 
 /**

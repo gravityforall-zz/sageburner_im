@@ -20,11 +20,15 @@ import java.util.Collection;
 
 
 /**
- * Class used for logging a user out.
+ * Class used for accessing the XMPP service.
  */
 public class XMPPService {
 
     private XMPPConnection xmppConn;
+
+    public XMPPConnection getXmppConn() {
+        return xmppConn;
+    }
 
     public void setXmppConn(XMPPConnection xmppConn) {
         this.xmppConn = xmppConn;
@@ -48,14 +52,14 @@ public class XMPPService {
     }
 
     public void disconnect(final Runnable onSuccess) {
-        new DisconnectTask(xmppConn, onSuccess).execute();
+        new DisconnectTask(onSuccess).execute();
     }
 
     public void sendMessage(ConversationMessageItem convMsgItem, final Runnable onSuccess) {
-        new SendMessageTask(xmppConn, convMsgItem, onSuccess).execute();
+        new SendMessageTask(convMsgItem, onSuccess).execute();
     }
 
-    private static class ConnectTask extends SafeAsyncTask<Boolean> {
+    private class ConnectTask extends SafeAsyncTask<Boolean> {
 
         private final Runnable onSuccess;
 
@@ -68,10 +72,10 @@ public class XMPPService {
             // Create a connection
             ConnectionConfiguration connConfig = new ConnectionConfiguration(Constants.XMPP.HOST, Constants.XMPP.PORT);
             connConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
+            setXmppConn(new XMPPTCPConnection(connConfig));
 
-            XMPPConnection xmppConn = new XMPPTCPConnection(connConfig);
             try {
-                xmppConn.connect();
+                getXmppConn().connect();
                 Log.i("XMPPChatDemoActivity", "[SettingsDialog] Connected to " + xmppConn.getHost());
             } catch (Exception ex) {
                 Log.e("XMPPChatDemoActivity",  "[SettingsDialog] Failed to connect to "+ xmppConn.getHost());
@@ -80,15 +84,15 @@ public class XMPPService {
             }
 
             try {
-                xmppConn.login(Constants.XMPP.USERNAME, Constants.XMPP.PASSWORD);
+                getXmppConn().login(Constants.XMPP.USERNAME, Constants.XMPP.PASSWORD);
                 Log.i("XMPPChatDemoActivity",  "Logged in as" + xmppConn.getUser());
 
                 // Set the status to available
                 Presence presence = new Presence(Presence.Type.available);
-                xmppConn.sendPacket(presence);
-                setXmppConn(xmppConn);
+                getXmppConn().sendPacket(presence);
+                //setXmppConn(xmppConn);
 
-                Roster roster = xmppConn.getRoster();
+                Roster roster = getXmppConn().getRoster();
                 Collection<RosterEntry> entries = roster.getEntries();
                 for (RosterEntry entry : entries) {
 
@@ -119,11 +123,10 @@ public class XMPPService {
         }
 
         @Override
-        protected void onSuccess(final Boolean connectedSuccessfully) throws Exception {
+        protected void onSuccess(final Boolean connectionSuccess) throws Exception {
             //TODO: implement onSuccess method
-            super.onSuccess(connectedSuccessfully);
 
-            Ln.d("Connection succeeded: %s", connectedSuccessfully);
+            Ln.d("Connection succeeded!");
             onSuccess.run();
         }
 
@@ -132,17 +135,15 @@ public class XMPPService {
             //TODO: implement onException method
             super.onException(e);
 
-            Ln.e(e.getCause(), "Connection failed.");
+            Ln.e(e.getCause(), "Connection failed!!!");
         }
     }
 
-    private static class DisconnectTask extends SafeAsyncTask<Boolean> {
+    private class DisconnectTask extends SafeAsyncTask<Boolean> {
 
-        private XMPPConnection xmppConn;
         private final Runnable onSuccess;
 
-        protected DisconnectTask(final XMPPConnection xmppConn, final Runnable onSuccess) {
-            this.xmppConn = xmppConn;
+        protected DisconnectTask(final Runnable onSuccess) {
             this.onSuccess = onSuccess;
         }
 
@@ -158,11 +159,11 @@ public class XMPPService {
         }
 
         @Override
-        protected void onSuccess(final Boolean connectedSuccessfully) throws Exception {
+        protected void onSuccess(final Boolean disconnectedSuccessfully) throws Exception {
             //TODO: implement onSuccess method
-            super.onSuccess(connectedSuccessfully);
+            super.onSuccess(disconnectedSuccessfully);
 
-            Ln.d("Disconnection successful: %s", connectedSuccessfully);
+            Ln.d("Disconnection successful: %s", disconnectedSuccessfully);
             onSuccess.run();
         }
 
@@ -175,14 +176,12 @@ public class XMPPService {
         }
     }
 
-    private static class SendMessageTask extends SafeAsyncTask<Boolean> {
+    private class SendMessageTask extends SafeAsyncTask<Boolean> {
 
-        private final XMPPConnection xmppConn;
-        private final Runnable onSuccess;
         private final ConversationMessageItem convMsgItem;
+        private final Runnable onSuccess;
 
-        protected SendMessageTask(final XMPPConnection xmppConn, ConversationMessageItem convMsgItem, final Runnable onSuccess) {
-            this.xmppConn = xmppConn;
+        protected SendMessageTask(ConversationMessageItem convMsgItem, final Runnable onSuccess) {
             this.convMsgItem = convMsgItem;
             this.onSuccess = onSuccess;
         }
@@ -204,11 +203,11 @@ public class XMPPService {
         }
 
         @Override
-        protected void onSuccess(final Boolean connectedSuccessfully) throws Exception {
+        protected void onSuccess(final Boolean messageSendSuccessful) throws Exception {
             //TODO: implement onSuccess method
-            super.onSuccess(connectedSuccessfully);
+            super.onSuccess(messageSendSuccessful);
 
-            Ln.d("Connection succeeded: %s", connectedSuccessfully);
+            Ln.d("Message send successful: %s", messageSendSuccessful);
             onSuccess.run();
         }
 
@@ -217,7 +216,7 @@ public class XMPPService {
             //TODO: implement onException method
             super.onException(e);
 
-            Ln.e(e.getCause(), "Connection failed.");
+            Ln.e(e.getCause(), "Message send failed.");
         }
     }
 }
