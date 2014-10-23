@@ -49,11 +49,11 @@ public class BootstrapModule {
         return new PostFromAnyThreadBus();
     }
 
-    @Provides
-    @Singleton
-    LogoutService provideLogoutService(final Context context, final AccountManager accountManager) {
-        return new LogoutService(context, accountManager);
-    }
+//    @Singleton
+//    @Provides
+//    LogoutService provideLogoutService(final Context context, final AccountManager accountManager) {
+//        return new LogoutService(context, accountManager);
+//    }
 
     @Provides
     BootstrapService provideBootstrapService(RestAdapter restAdapter) {

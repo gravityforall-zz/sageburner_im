@@ -27,6 +27,11 @@ public class FriendsListFragment extends ItemListFragment<User> {
     @Inject protected LogoutService logoutService;
 
     @Override
+    protected LogoutService getLogoutService() {
+        return logoutService;
+    }
+
+    @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Injector.inject(this);
@@ -45,11 +50,6 @@ public class FriendsListFragment extends ItemListFragment<User> {
 
         listView.setFastScrollEnabled(true);
         listView.setDividerHeight(0);
-    }
-
-    @Override
-    protected LogoutService getLogoutService() {
-        return logoutService;
     }
 
     @Override
@@ -82,6 +82,11 @@ public class FriendsListFragment extends ItemListFragment<User> {
         };
     }
 
+    @Override
+    public void onLoadFinished(final Loader<List<User>> loader, final List<User> items) {
+        super.onLoadFinished(loader, items);
+    }
+
     public void onListItemClick(final ListView l, final View v, final int position, final long id) {
         //final User user = ((User) l.getItemAtPosition(position));
 
@@ -89,10 +94,7 @@ public class FriendsListFragment extends ItemListFragment<User> {
         pager.setCurrentItem(1, true);
     }
 
-    @Override
-    public void onLoadFinished(final Loader<List<User>> loader, final List<User> items) {
-        super.onLoadFinished(loader, items);
-    }
+
 
     @Override
     protected int getErrorMessage(final Exception exception) {

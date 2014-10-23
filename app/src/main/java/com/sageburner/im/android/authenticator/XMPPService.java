@@ -39,6 +39,9 @@ public class XMPPService {
 //        this.xmppConn = xmppConn;
 //    }
 
+    @Inject
+    public XMPPService() { }
+
     public void setPacketListener(PacketListener packetListener, PacketFilter packetFilter) {
         if (xmppConn != null) {
             xmppConn.addPacketListener(packetListener, packetFilter);
