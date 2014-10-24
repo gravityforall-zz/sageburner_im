@@ -99,7 +99,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                     items.add(convMsgItem);
                 } catch (Exception e) {
                     Log.e("XMPPChatDemoActivity ", "Sending text to " + recipient + " failed!");
-                    Log.e("XMPPChatDemoActivity ", e.getMessage());
+//                    Log.e("XMPPChatDemoActivity ", e.getMessage());
                 }
             }
         });

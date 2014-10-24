@@ -41,7 +41,7 @@ public class FriendsListFragment extends ItemListFragment<User> {
     public void onActivityCreated(final Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setEmptyText(R.string.no_users);
+        setEmptyText(R.string.no_friends);
     }
 
     @Override
