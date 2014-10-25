@@ -128,13 +128,16 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         return new ThrowableLoader<List<ConversationMessageItem>>(getActivity(), items) {
             @Override
             public List<ConversationMessageItem> loadData() throws Exception {
-                List<ConversationMessageItem> latest = null;
-//                latest = createDummyMessages();
-                if (latest != null) {
-                    return latest;
-                } else {
-                    return Collections.emptyList();
-                }
+                return new ArrayList<ConversationMessageItem>();
+//                return createDummyMessages();
+//                List<ConversationMessageItem> latest = null;
+////                latest = createDummyMessages();
+//                if (latest != null) {
+//                    return latest;
+//                } else {
+////                    return Collections.emptyList();
+//                    return null;
+//                }
             }
         };
     }
@@ -151,7 +154,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
     @Override
     protected int getErrorMessage(final Exception exception) {
-        return R.string.error_loading_users;
+        return R.string.error_loading_messages;
     }
 
     @Override

@@ -39,7 +39,6 @@ public class XMPPService {
 //        this.xmppConn = xmppConn;
 //    }
 
-    @Inject
     public XMPPService() { }
 
     public void setPacketListener(PacketListener packetListener, PacketFilter packetFilter) {
@@ -194,7 +193,8 @@ public class XMPPService {
 
         @Override
         public Boolean call() throws Exception {
-            Message message = new Message(convMsgItem.getToUser().getUsername(), Message.Type.chat);
+//            Message message = new Message(convMsgItem.getToUser().getUsername(), Message.Type.chat);
+            Message message = new Message("ryan@sageburner.com", Message.Type.chat);
             message.setBody(convMsgItem.getMessageText());
             getXmppConn().sendPacket(message);
             return true;
