@@ -6,6 +6,7 @@ import android.content.Context;
 import com.sageburner.im.android.authenticator.ApiKeyProvider;
 import com.sageburner.im.android.authenticator.BootstrapAuthenticatorActivity;
 import com.sageburner.im.android.authenticator.LogoutService;
+import com.sageburner.im.android.authenticator.XMPPService;
 import com.sageburner.im.android.core.BootstrapService;
 import com.sageburner.im.android.core.Constants;
 import com.sageburner.im.android.core.PostFromAnyThreadBus;
@@ -54,6 +55,12 @@ public class BootstrapModule {
 //    LogoutService provideLogoutService(final Context context, final AccountManager accountManager) {
 //        return new LogoutService(context, accountManager);
 //    }
+
+    @Singleton
+    @Provides
+    XMPPService provideXMPPService() {
+        return new XMPPService();
+    }
 
     @Provides
     BootstrapService provideBootstrapService(RestAdapter restAdapter) {
