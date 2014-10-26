@@ -132,9 +132,6 @@ public class MainActivity extends BootstrapFragmentActivity {
 
     private void initScreen() {
         if (userHasAuthenticated) {
-            //Connect to XMPP server
-            connect();
-
             Ln.d("Foo");
             final FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
@@ -167,7 +164,9 @@ public class MainActivity extends BootstrapFragmentActivity {
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
                 super.onSuccess(hasAuthenticated);
                 userHasAuthenticated = true;
-                initScreen();
+                //Connect to XMPP server
+                connect();
+
             }
         }.execute();
     }
@@ -235,7 +234,7 @@ public class MainActivity extends BootstrapFragmentActivity {
         getXMPPService().connect(new Runnable() {
             @Override
             public void run() {
-                //do something?
+                initScreen();
             }
         });
     }
