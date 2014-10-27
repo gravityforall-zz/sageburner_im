@@ -85,7 +85,11 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<Convers
                 .placeholder(R.drawable.gravatar_icon)
                 .into((ImageView)convertView.findViewById(R.id.iv_avatar));
         //convertView.findViewById(R.id.iv_avatar).setBackgroundColor(Color.BLUE);
-        ((TextView)convertView.findViewById(R.id.tv_message)).setText("Whimmy Wham Wham Wozzle!  Let's see if we can get this bad boy to line wrap!  SHAZAAM!");
+        ConversationMessageItem msgItem = getItem(position);
+//        String name = msgItem.getFromUser().getUsername();
+        String name = "user1@sageburner.com";
+        String msgText = msgItem.getMessageText();
+        ((TextView)convertView.findViewById(R.id.tv_message)).setText(name + "\n" + msgText);
 
         return convertView;
     }

@@ -26,8 +26,10 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.util.StringUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,6 +39,8 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     @Inject protected BootstrapServiceProvider serviceProvider;
     @Inject protected LogoutService logoutService;
     @Inject protected XMPPService xmppService;
+
+    private ConversationListAdapter conversationListAdapter;
 
     @Override
     protected LogoutService getLogoutService() {
@@ -93,10 +97,13 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
                 ConversationMessageItem convMsgItem = new ConversationMessageItem();
                 convMsgItem.setMessageText(messageText);
+                convMsgItem.setIncoming(false);
 
                 try {
                     sendMessage(convMsgItem);
                     items.add(convMsgItem);
+                    conversationListAdapter.setItems(items);
+//                    conversationListAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     Log.e("XMPPChatDemoActivity ", "Sending text to " + recipient + " failed!");
 //                    Log.e("XMPPChatDemoActivity ", e.getMessage());
@@ -116,8 +123,9 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
                     convMsgItem.setMessageText(message.getBody());
-
+                    convMsgItem.setIncoming(true);
                     items.add(convMsgItem);
+                    conversationListAdapter.setItems(items);
                 }
             }
         }, filter);
@@ -128,8 +136,8 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         return new ThrowableLoader<List<ConversationMessageItem>>(getActivity(), items) {
             @Override
             public List<ConversationMessageItem> loadData() throws Exception {
-                return new ArrayList<ConversationMessageItem>();
-//                return createDummyMessages();
+//                return new ArrayList<ConversationMessageItem>();
+                return createNewConversationMessage();
 //                List<ConversationMessageItem> latest = null;
 ////                latest = createDummyMessages();
 //                if (latest != null) {
@@ -159,7 +167,8 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
     @Override
     protected AlternatingColorListAdapter<ConversationMessageItem> createAdapter(final List<ConversationMessageItem> items) {
-        return new ConversationListAdapter(getActivity().getLayoutInflater(), items);
+        conversationListAdapter = new ConversationListAdapter(getActivity().getLayoutInflater(), items);
+        return conversationListAdapter;
     }
 
     private void sendMessage(ConversationMessageItem convMsgItem) {
@@ -167,43 +176,27 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
             @Override
             public void run() {
                 // Calling a refresh will force the service to...?
-                forceRefresh();
+//                forceRefresh();
             }
         });
     }
 
-    private List<ConversationMessageItem> createDummyMessages() {
+    private List<ConversationMessageItem> createNewConversationMessage() {
         List<ConversationMessageItem> msgList = new ArrayList<ConversationMessageItem>();
 
-        User alice = new User();
-        alice.setFirstName("Alice");
-        alice.setUsername("alice@sageburner.com");
-        User bob = new User();
-        bob.setFirstName("Bob");
-        bob.setUsername("bob@sageburner.com");
+        User system = new User();
+        system.setFirstName("System");
+        system.setUsername("system@sageburner.com");
+        User user1 = new User();
+        user1.setFirstName("User");
+        user1.setUsername("user1@sageburner.com");
 
         ConversationMessageItem msgItem = new ConversationMessageItem();
-        msgItem.setFromUser(alice);
-        msgItem.setToUser(bob);
-        msgItem.setMessageText("Hello!");
-        msgList.add(msgItem);
-
-        msgItem = new ConversationMessageItem();
-        msgItem.setFromUser(bob);
-        msgItem.setToUser(alice);
-        msgItem.setMessageText("Hi!");
-        msgList.add(msgItem);
-
-        msgItem = new ConversationMessageItem();
-        msgItem.setFromUser(bob);
-        msgItem.setToUser(alice);
-        msgItem.setMessageText("How are you?");
-        msgList.add(msgItem);
-
-        msgItem = new ConversationMessageItem();
-        msgItem.setFromUser(alice);
-        msgItem.setToUser(bob);
-        msgItem.setMessageText("Fine, thanks.");
+        msgItem.setFromUser(system);
+        msgItem.setToUser(user1);
+//        msgItem.setMessageText("conversation started @ " + new Date());
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM d h:mm");
+        msgItem.setMessageText(sdf.format(new Date()));
         msgList.add(msgItem);
 
         return msgList;
