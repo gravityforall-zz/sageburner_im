@@ -46,8 +46,8 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     protected LogoutService getLogoutService() {
         return logoutService;
     }
-    //    @Override
-    //TODO: make this part of ItemListFragment??
+
+    @Override
     protected XMPPService getXMPPService() {
         return xmppService;
     }

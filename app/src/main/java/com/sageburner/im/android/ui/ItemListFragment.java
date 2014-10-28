@@ -28,6 +28,7 @@ import com.sageburner.im.android.authenticator.LogoutService;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.github.kevinsawicki.wishlist.Toaster;
 import com.github.kevinsawicki.wishlist.ViewUtils;
+import com.sageburner.im.android.authenticator.XMPPService;
 
 import java.util.Collections;
 import java.util.List;
@@ -168,6 +169,8 @@ public abstract class ItemListFragment<E> extends Fragment
     }
 
     protected abstract LogoutService getLogoutService();
+
+    protected abstract XMPPService getXMPPService();
 
     private void logout() {
         getLogoutService().logout(new Runnable() {

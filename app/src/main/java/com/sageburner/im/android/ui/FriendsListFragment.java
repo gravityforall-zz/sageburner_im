@@ -13,6 +13,7 @@ import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
+import com.sageburner.im.android.authenticator.XMPPService;
 import com.sageburner.im.android.core.User;
 
 import javax.inject.Inject;
@@ -25,10 +26,16 @@ public class FriendsListFragment extends ItemListFragment<User> {
 
     @Inject protected BootstrapServiceProvider serviceProvider;
     @Inject protected LogoutService logoutService;
+    @Inject protected XMPPService xmppService;
 
     @Override
     protected LogoutService getLogoutService() {
         return logoutService;
+    }
+
+    @Override
+    protected XMPPService getXMPPService() {
+        return xmppService;
     }
 
     @Override
