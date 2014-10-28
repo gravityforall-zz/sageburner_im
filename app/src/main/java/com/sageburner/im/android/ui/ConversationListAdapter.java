@@ -60,18 +60,22 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<Convers
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
+        ConversationMessageItem msgItem = getItem(position);
+        boolean isIncoming = msgItem.isIncoming();
+
         int layoutId;
-        if (position % 2 != 0) {
-            layoutId = R.layout.conversation_list_item_out;
-        } else {
+        if (isIncoming) {
             layoutId = R.layout.conversation_list_item_in;
+        } else {
+            layoutId = R.layout.conversation_list_item_out;
         }
 
-        //notes
+        //viewholder
         ConversationViewHolder conViewHolder;
 
         if (convertView == null) {
-            // Inflate your view
+            //inflate view
             convertView = inflater.inflate(layoutId, parent, false);
             conViewHolder = new ConversationViewHolder();
             conViewHolder.setAvatar((ImageView) convertView.findViewById(R.id.iv_avatar));
@@ -85,11 +89,11 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<Convers
                 .placeholder(R.drawable.gravatar_icon)
                 .into((ImageView)convertView.findViewById(R.id.iv_avatar));
         //convertView.findViewById(R.id.iv_avatar).setBackgroundColor(Color.BLUE);
-        ConversationMessageItem msgItem = getItem(position);
+
 //        String name = msgItem.getFromUser().getUsername();
         String name = "user1@sageburner.com";
         String msgText = msgItem.getMessageText();
-        ((TextView)convertView.findViewById(R.id.tv_message)).setText(name + "\n" + msgText);
+        ((TextView)convertView.findViewById(R.id.tv_message)).setText(msgText);
 
         return convertView;
     }

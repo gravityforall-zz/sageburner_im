@@ -103,7 +103,6 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                     sendMessage(convMsgItem);
                     items.add(convMsgItem);
                     conversationListAdapter.setItems(items);
-//                    conversationListAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     Log.e("XMPPChatDemoActivity ", "Sending text to " + recipient + " failed!");
 //                    Log.e("XMPPChatDemoActivity ", e.getMessage());
@@ -125,7 +124,15 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                     convMsgItem.setMessageText(message.getBody());
                     convMsgItem.setIncoming(true);
                     items.add(convMsgItem);
-                    conversationListAdapter.setItems(items);
+
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //update list adapter from UI thread
+                            conversationListAdapter.setItems(items);
+                        }
+                    });
+
                 }
             }
         }, filter);
