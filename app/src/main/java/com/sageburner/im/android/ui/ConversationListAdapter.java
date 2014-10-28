@@ -2,6 +2,7 @@
 package com.sageburner.im.android.ui;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,47 +55,49 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<Convers
                 .placeholder(R.drawable.gravatar_icon)
                 .into(imageView(0));
 
-        setText(1, String.format("%1$s %2$s", conversationMessageItem.getToUser().getFirstName(), conversationMessageItem.getToUser().getLastName()));
-
+//        setText(1, String.format("%1$s %2$s", conversationMessageItem.getToUser().getFirstName(), conversationMessageItem.getToUser().getLastName()));
+        setText(1, String.format("%1$s %2$s", "user", "one"));
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        ConversationMessageItem msgItem = getItem(position);
-        boolean isIncoming = msgItem.isIncoming();
-
-        int layoutId;
-        if (isIncoming) {
-            layoutId = R.layout.conversation_list_item_in;
-        } else {
-            layoutId = R.layout.conversation_list_item_out;
-        }
-
-        //viewholder
-        ConversationViewHolder conViewHolder;
-
-        if (convertView == null) {
-            //inflate view
-            convertView = inflater.inflate(layoutId, parent, false);
-            conViewHolder = new ConversationViewHolder();
-            conViewHolder.setAvatar((ImageView) convertView.findViewById(R.id.iv_avatar));
-            conViewHolder.setMessage((TextView) convertView.findViewById(R.id.tv_message));
-
-            convertView.setTag(conViewHolder);
-        }
-
-        Picasso.with(BootstrapApplication.getInstance())
-                .load("dummy_avatar_url")
-                .placeholder(R.drawable.gravatar_icon)
-                .into((ImageView)convertView.findViewById(R.id.iv_avatar));
-        //convertView.findViewById(R.id.iv_avatar).setBackgroundColor(Color.BLUE);
-
-//        String name = msgItem.getFromUser().getUsername();
-        String name = "user1@sageburner.com";
-        String msgText = msgItem.getMessageText();
-        ((TextView)convertView.findViewById(R.id.tv_message)).setText(msgText);
-
-        return convertView;
-    }
+//    @Override
+//    public View getView(int position, View convertView, ViewGroup parent) {
+//
+//        ConversationMessageItem msgItem = getItem(position);
+//        boolean isIncoming = msgItem.isIncoming();
+//
+//        int layoutId;
+//        if (isIncoming) {
+//            layoutId = R.layout.conversation_list_item_in;
+//        } else {
+//            layoutId = R.layout.conversation_list_item_out;
+//        }
+//
+//        Log.i("XMPPChatDemoActivity ", "layoutId: " + layoutId);
+//
+//        //viewholder
+//        ConversationViewHolder conViewHolder;
+//
+//        if (convertView == null) {
+//            //inflate view
+//            convertView = inflater.inflate(layoutId, parent, false);
+//            conViewHolder = new ConversationViewHolder();
+//            conViewHolder.setAvatar((ImageView) convertView.findViewById(R.id.iv_avatar));
+//            conViewHolder.setMessage((TextView) convertView.findViewById(R.id.tv_message));
+//
+//            convertView.setTag(conViewHolder);
+//        }
+//
+//        Picasso.with(BootstrapApplication.getInstance())
+//                .load("dummy_avatar_url")
+//                .placeholder(R.drawable.gravatar_icon)
+//                .into((ImageView)convertView.findViewById(R.id.iv_avatar));
+//        //convertView.findViewById(R.id.iv_avatar).setBackgroundColor(Color.BLUE);
+//
+////        String name = msgItem.getFromUser().getUsername();
+//        String name = "user1@sageburner.com";
+//        String msgText = msgItem.getMessageText();
+//        ((TextView)convertView.findViewById(R.id.tv_message)).setText(msgText);
+//
+//        return convertView;
+//    }
 }
