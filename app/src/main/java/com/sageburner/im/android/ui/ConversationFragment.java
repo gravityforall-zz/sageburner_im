@@ -3,6 +3,7 @@ package com.sageburner.im.android.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import butterknife.InjectView;
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
@@ -90,18 +92,21 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                 String messageText = msgInput.getText().toString();
                 Log.i("XMPPChatDemoActivity ", "Sending text " + messageText + " to " + recipient);
 
-                ConversationMessageItem convMsgItem = new ConversationMessageItem();
-                convMsgItem.setMessageText(messageText);
-                convMsgItem.setIncoming(false);
+                if (!TextUtils.isEmpty(messageText)) {
+                    ConversationMessageItem convMsgItem = new ConversationMessageItem();
+                    convMsgItem.setMessageText(messageText);
+                    convMsgItem.setIncoming(false);
 
-                try {
-                    sendMessage(convMsgItem);
-                    items.add(convMsgItem);
-                    conversationListAdapter.setItems(items);
-                } catch (Exception e) {
-                    Log.e("XMPPChatDemoActivity ", "Sending text to " + recipient + " failed!");
-//                    Log.e("XMPPChatDemoActivity ", e.getMessage());
+                    try {
+                        sendMessage(convMsgItem);
+                        items.add(convMsgItem);
+                        conversationListAdapter.setItems(items);
+                    } catch (Exception e) {
+                        Log.e("XMPPChatDemoActivity ", "Sending text to " + recipient + " failed!");
+                    }
                 }
+
+                msgInput.setText("");
             }
         });
 
@@ -138,16 +143,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         return new ThrowableLoader<List<ConversationMessageItem>>(getActivity(), items) {
             @Override
             public List<ConversationMessageItem> loadData() throws Exception {
-//                return new ArrayList<ConversationMessageItem>();
                 return createNewConversationMessage();
-//                List<ConversationMessageItem> latest = null;
-////                latest = createDummyMessages();
-//                if (latest != null) {
-//                    return latest;
-//                } else {
-////                    return Collections.emptyList();
-//                    return null;
-//                }
             }
         };
     }
@@ -168,7 +164,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     }
 
     @Override
-    protected AlternatingColorListAdapter<ConversationMessageItem> createAdapter(final List<ConversationMessageItem> items) {
+    protected SingleTypeAdapter<ConversationMessageItem> createAdapter(final List<ConversationMessageItem> items) {
         conversationListAdapter = new ConversationListAdapter(getActivity().getLayoutInflater(), items);
         return conversationListAdapter;
     }
@@ -177,8 +173,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         xmppService.sendMessage(convMsgItem, new Runnable() {
             @Override
             public void run() {
-                // Calling a refresh will force the service to...?
-//                forceRefresh();
+                //code to be run onSuccess of message send
             }
         });
     }
@@ -196,7 +191,6 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         ConversationMessageItem msgItem = new ConversationMessageItem();
         msgItem.setFromUser(system);
         msgItem.setToUser(user1);
-//        msgItem.setMessageText("conversation started @ " + new Date());
         SimpleDateFormat sdf = new SimpleDateFormat("MMM d h:mm");
         msgItem.setMessageText(sdf.format(new Date()));
         msgList.add(msgItem);

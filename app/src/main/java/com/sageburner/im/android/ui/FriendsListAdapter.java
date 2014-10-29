@@ -1,8 +1,10 @@
 package com.sageburner.im.android.ui;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 
+import android.widget.ImageView;
 import com.sageburner.im.android.BootstrapApplication;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.core.User;
@@ -51,11 +53,17 @@ public class FriendsListAdapter extends AlternatingColorListAdapter<User> {
     protected void update(final int position, final User user) {
         super.update(position, user);
 
-        Picasso.with(BootstrapApplication.getInstance())
-                .load("dummy_avatar_url")
-                .placeholder(R.drawable.gravatar_icon)
-                .into(imageView(0));
+//        Picasso.with(BootstrapApplication.getInstance())
+//                .load("dummy_avatar_url")
+//                .placeholder(R.drawable.gravatar_icon)
+//                .into(imageView(0));
 
-        setText(1,user.getFirstName() + " " + user.getOnlineStatus());
+        if (user.getOnlineStatus() == User.OnlineStatus.ONLINE) {
+            imageView(0).setBackgroundColor(Color.GREEN);
+        } else {
+            imageView(0).setBackgroundColor(Color.LTGRAY);
+        }
+
+        setText(1,String.format("%s",user.getUsername()));
     }
 }

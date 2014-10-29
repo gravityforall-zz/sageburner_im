@@ -88,31 +88,7 @@ public class FriendsListFragment extends ItemListFragment<User> {
 
                 System.out.println("Presence changed: " + presence.getFrom() + " " + presence);
 
-                List<User> userList = new ArrayList<User>();
-                User user;
-
-                Roster roster = xmppService.getRoster();
-                Collection<RosterEntry> entries = roster.getEntries();
-
-                Presence entryPresence;
-
-                for (RosterEntry entry : entries) {
-                    user = new User();
-//                    user.setUsername(entry.getUser());
-//                    user.setFirstName(entry.getName());
-
-                    user.setFirstName(entry.getUser());
-
-                    entryPresence = roster.getPresence(entry.getUser());
-                    Presence.Type type = entryPresence.getType();
-                    if (type == Presence.Type.available) {
-                        user.setOnlineStatus(User.OnlineStatus.ONLINE);
-                    } else {
-                        user.setOnlineStatus(User.OnlineStatus.OFFLINE);
-                    }
-
-                    userList.add(user);
-                }
+                List<User> userList = mapRosterToUserList();
 
                 //add all roster entries to the friends list
                 items.addAll(userList);
@@ -130,36 +106,12 @@ public class FriendsListFragment extends ItemListFragment<User> {
 
     @Override
     public Loader<List<User>> onCreateLoader(final int id, final Bundle args) {
-        final List<User> initialItems = items;
+
         return new ThrowableLoader<List<User>>(getActivity(), items) {
             @Override
             public List<User> loadData() throws Exception {
 
-                List<User> userList = new ArrayList<User>();
-                User user;
-
-                Roster roster = xmppService.getRoster();
-                Collection<RosterEntry> entries = roster.getEntries();
-
-                Presence entryPresence;
-
-                for (RosterEntry entry : entries) {
-                    user = new User();
-//                    user.setUsername(entry.getUser());
-//                    user.setFirstName(entry.getName());
-
-                    user.setFirstName(entry.getUser());
-
-                    entryPresence = roster.getPresence(entry.getUser());
-                    Presence.Type type = entryPresence.getType();
-                    if (type == Presence.Type.available) {
-                        user.setOnlineStatus(User.OnlineStatus.ONLINE);
-                    } else {
-                        user.setOnlineStatus(User.OnlineStatus.OFFLINE);
-                    }
-
-                    userList.add(user);
-                }
+                List<User> userList = mapRosterToUserList();
 
                 if (userList.size() > 0) {
                     return userList;
@@ -204,8 +156,6 @@ public class FriendsListFragment extends ItemListFragment<User> {
         pager.setCurrentItem(1, true);
     }
 
-
-
     @Override
     protected int getErrorMessage(final Exception exception) {
         return R.string.error_loading_users;
@@ -216,4 +166,32 @@ public class FriendsListFragment extends ItemListFragment<User> {
         friendsListAdapter = new FriendsListAdapter(getActivity().getLayoutInflater(), items);
         return friendsListAdapter;
     }
+
+    private List<User> mapRosterToUserList() {
+        List<User> userList = new ArrayList<User>();
+        User user;
+
+        Roster roster = xmppService.getRoster();
+        Collection<RosterEntry> entries = roster.getEntries();
+
+        Presence entryPresence;
+
+        for (RosterEntry entry : entries) {
+            user = new User();
+            user.setUsername(entry.getUser());
+
+            entryPresence = roster.getPresence(entry.getUser());
+            Presence.Type type = entryPresence.getType();
+            if (type == Presence.Type.available) {
+                user.setOnlineStatus(User.OnlineStatus.ONLINE);
+            } else {
+                user.setOnlineStatus(User.OnlineStatus.OFFLINE);
+            }
+
+            userList.add(user);
+        }
+
+        return userList;
+    }
+
 }

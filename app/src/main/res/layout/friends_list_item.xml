@@ -19,7 +19,7 @@
             />
 
     <TextView
-            android:id="@+id/tv_chat_content"
+            android:id="@+id/tv_friend_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"

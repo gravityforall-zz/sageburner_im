@@ -1,6 +1,7 @@
 
 package com.sageburner.im.android.ui;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.sageburner.im.android.BootstrapApplication;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.core.ConversationMessageItem;
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * Adapter to
  */
-public class ConversationListAdapter extends AlternatingColorListAdapter<ConversationMessageItem> {
+public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessageItem> {
 
     private final LayoutInflater inflater;
 
@@ -29,8 +31,9 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<Convers
      * @param items
      */
     public ConversationListAdapter(final LayoutInflater inflater, final List<ConversationMessageItem> items) {
-        super(R.layout.user_list_item, inflater, items);
+        super(inflater, R.layout.user_list_item);
 
+        setItems(items);
         this.inflater = inflater;
     }
 
@@ -48,7 +51,12 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<Convers
 
     @Override
     protected void update(final int position, final ConversationMessageItem conversationMessageItem) {
-        super.update(position, conversationMessageItem);
+
+        if (conversationMessageItem.isIncoming()) {
+            updater.view.setBackgroundColor(Color.LTGRAY);
+        } else {
+            updater.view.setBackgroundColor(Color.WHITE);
+        }
 
         Picasso.with(BootstrapApplication.getInstance())
                 .load(conversationMessageItem.getAvatarUrl())
@@ -56,7 +64,7 @@ public class ConversationListAdapter extends AlternatingColorListAdapter<Convers
                 .into(imageView(0));
 
 //        setText(1, String.format("%1$s %2$s", conversationMessageItem.getToUser().getFirstName(), conversationMessageItem.getToUser().getLastName()));
-        setText(1, String.format("%1$s %2$s", "user", "one"));
+        setText(1, String.format("%s",conversationMessageItem.getMessageText()));
     }
 
 //    @Override
