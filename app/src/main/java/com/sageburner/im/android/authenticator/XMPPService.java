@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.Log;
 import com.sageburner.im.android.core.Constants;
 import com.sageburner.im.android.core.ConversationMessageItem;
+import com.sageburner.im.android.core.User;
 import com.sageburner.im.android.util.Ln;
 import com.sageburner.im.android.util.SafeAsyncTask;
 import org.jivesoftware.smack.*;
@@ -17,6 +18,8 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -26,19 +29,6 @@ public class XMPPService {
 
     private XMPPConnection xmppConn;
 
-    public XMPPConnection getXmppConn() {
-        return xmppConn;
-    }
-
-    public void setXmppConn(XMPPConnection xmppConn) {
-        this.xmppConn = xmppConn;
-    }
-
-//    @Inject
-//    public XMPPService(final XMPPConnection xmppConn) {
-//        this.xmppConn = xmppConn;
-//    }
-
     public XMPPService() { }
 
     public void setPacketListener(PacketListener packetListener, PacketFilter packetFilter) {
@@ -47,6 +37,10 @@ public class XMPPService {
         } else {
             Ln.e("XMPPService: setPacketListener failed", "XMPPConnection was null");
         }
+    }
+
+    public Roster getRoster() {
+        return xmppConn.getRoster();
     }
 
     public void connect(final Runnable onSuccess) {
@@ -74,29 +68,29 @@ public class XMPPService {
             // Create a connection
             ConnectionConfiguration connConfig = new ConnectionConfiguration(Constants.XMPP.HOST, Constants.XMPP.PORT);
             connConfig.setSecurityMode(ConnectionConfiguration.SecurityMode.disabled);
-            setXmppConn(new XMPPTCPConnection(connConfig));
+            xmppConn = new XMPPTCPConnection(connConfig);
 
             try {
-                getXmppConn().connect();
+                xmppConn.connect();
                 Log.i("XMPPChatDemoActivity", "[SettingsDialog] Connected to " + xmppConn.getHost());
             } catch (Exception ex) {
                 Log.e("XMPPChatDemoActivity",  "[SettingsDialog] Failed to connect to "+ xmppConn.getHost());
                 Log.e("XMPPChatDemoActivity", ex.toString());
-                setXmppConn(null);
+                xmppConn = null;
             }
 
             try {
                 //log in
-                getXmppConn().login(Constants.XMPP.USERNAME, Constants.XMPP.PASSWORD);
+                xmppConn.login(Constants.XMPP.USERNAME, Constants.XMPP.PASSWORD);
                 Log.i("XMPPChatDemoActivity",  "Logged in as" + xmppConn.getUser());
 
                 // Set the status to available
                 Presence presence = new Presence(Presence.Type.available);
-                getXmppConn().sendPacket(presence);
-                //setXmppConn(xmppConn);
+                xmppConn.sendPacket(presence);
 
                 //get roster
-                Roster roster = getXmppConn().getRoster();
+                Roster roster = xmppConn.getRoster();
+
                 Collection<RosterEntry> entries = roster.getEntries();
                 for (RosterEntry entry : entries) {
 
@@ -115,11 +109,11 @@ public class XMPPService {
                     if (type == Presence.Type.available)
                         Log.d("XMPPChatDemoActivity", "Presence AVIALABLE");
                         Log.d("XMPPChatDemoActivity", "Presence : " + entryPresence);
-                    }
+                }
             } catch (Exception ex) {
                 Log.e("XMPPChatDemoActivity", "Failed to log in as "+  Constants.XMPP.USERNAME);
                 Log.e("XMPPChatDemoActivity", ex.toString());
-                setXmppConn(null);
+                xmppConn = null;
             }
 
             //TODO: Fix this return statement
@@ -196,7 +190,7 @@ public class XMPPService {
 //            Message message = new Message(convMsgItem.getToUser().getUsername(), Message.Type.chat);
             Message message = new Message("ryan@sageburner.com", Message.Type.chat);
             message.setBody(convMsgItem.getMessageText());
-            getXmppConn().sendPacket(message);
+            xmppConn.sendPacket(message);
             return true;
         }
 

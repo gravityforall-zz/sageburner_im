@@ -18,6 +18,9 @@ public class User implements Serializable {
     private String publicKey;
     private String createdAt;
     private String updatedAt;
+    private OnlineStatus onlineStatus;
+
+    public enum OnlineStatus {ONLINE, OFFLINE};
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -101,5 +104,13 @@ public class User implements Serializable {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public OnlineStatus getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(OnlineStatus onlineStatus) {
+        this.onlineStatus = onlineStatus;
     }
 }

@@ -56,6 +56,6 @@ public class FriendsListAdapter extends AlternatingColorListAdapter<User> {
                 .placeholder(R.drawable.gravatar_icon)
                 .into(imageView(0));
 
-        setText(1, String.format("%1$s %2$s", user.getFirstName(), user.getLastName()));
+        setText(1,user.getFirstName() + " " + user.getOnlineStatus());
     }
 }
