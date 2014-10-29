@@ -47,11 +47,6 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         return logoutService;
     }
 
-    @Override
-    protected XMPPService getXMPPService() {
-        return xmppService;
-    }
-
     //XMPP Stuff
     private String recipient = "ryan@sageburner.com";
     private EditText msgInput;
@@ -179,7 +174,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     }
 
     private void sendMessage(ConversationMessageItem convMsgItem) {
-        getXMPPService().sendMessage(convMsgItem, new Runnable() {
+        xmppService.sendMessage(convMsgItem, new Runnable() {
             @Override
             public void run() {
                 // Calling a refresh will force the service to...?

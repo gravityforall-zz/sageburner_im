@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import butterknife.Views;
+import com.github.kevinsawicki.wishlist.Toaster;
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
@@ -194,24 +195,25 @@ public class MainActivity extends BootstrapFragmentActivity {
 
         switch(event.getItemPosition()) {
             case 0:
-                logout();
+//                logout();
+                Toaster.showShort(this, "logout pressed");
                 break;
         }
     }
 
-    private void logout() {
-        logoutService.logout(new Runnable() {
-            @Override
-            public void run() {
-                // Calling a refresh will force the service to look for a logged in user
-                // and when it finds none the user will be requested to log in again.
-                //forceRefresh();
-                setContentView(R.layout.login_activity);
-                //View view = findViewById(R.id.navigation_drawer);
-                //view.invalidate();
-            }
-        });
-    }
+//    private void logout() {
+//        logoutService.logout(new Runnable() {
+//            @Override
+//            public void run() {
+//                // Calling a refresh will force the service to look for a logged in user
+//                // and when it finds none the user will be requested to log in again.
+//                //forceRefresh();
+//                setContentView(R.layout.login_activity);
+//                //View view = findViewById(R.id.navigation_drawer);
+//                //view.invalidate();
+//            }
+//        });
+//    }
 
     @Override
     protected void onDestroy() {

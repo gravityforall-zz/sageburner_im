@@ -34,11 +34,6 @@ public class FriendsListFragment extends ItemListFragment<User> {
     }
 
     @Override
-    protected XMPPService getXMPPService() {
-        return xmppService;
-    }
-
-    @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Injector.inject(this);

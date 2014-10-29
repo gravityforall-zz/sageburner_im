@@ -170,7 +170,7 @@ public abstract class ItemListFragment<E> extends Fragment
 
     protected abstract LogoutService getLogoutService();
 
-    protected abstract XMPPService getXMPPService();
+
 
     private void logout() {
         getLogoutService().logout(new Runnable() {
