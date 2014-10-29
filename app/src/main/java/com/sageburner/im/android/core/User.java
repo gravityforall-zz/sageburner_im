@@ -20,7 +20,20 @@ public class User implements Serializable {
     private String updatedAt;
     private OnlineStatus onlineStatus;
 
-    public enum OnlineStatus {ONLINE, OFFLINE};
+    public enum OnlineStatus {
+        ONLINE("online"), OFFLINE("offline");
+
+        private String uiText;
+
+        private OnlineStatus(String uiText) {
+            this.uiText = uiText;
+        }
+
+        @Override
+        public String toString() {
+            return uiText;
+        }
+    };
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
