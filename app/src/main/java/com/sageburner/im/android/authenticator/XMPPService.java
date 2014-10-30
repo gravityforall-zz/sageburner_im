@@ -187,8 +187,7 @@ public class XMPPService {
 
         @Override
         public Boolean call() throws Exception {
-//            Message message = new Message(convMsgItem.getToUser().getUsername(), Message.Type.chat);
-            Message message = new Message("ryan@sageburner.com", Message.Type.chat);
+            Message message = new Message(convMsgItem.getToUser().getUsername(), Message.Type.chat);
             message.setBody(convMsgItem.getMessageText());
             xmppConn.sendPacket(message);
             return true;

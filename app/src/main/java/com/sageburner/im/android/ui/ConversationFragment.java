@@ -50,7 +50,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     }
 
     //XMPP Stuff
-    private String recipient = "ryan@sageburner.com";
+    private User recipient;
     private EditText msgInput;
 
     @Override
@@ -88,12 +88,15 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
         send.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //String to = recipient;
                 String messageText = msgInput.getText().toString();
                 Log.i("XMPPChatDemoActivity ", "Sending text " + messageText + " to " + recipient);
 
                 if (!TextUtils.isEmpty(messageText)) {
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
+                    //temporary hack
+                    recipient = new User();
+                    recipient.setUsername("ryan@sageburner.com");
+                    convMsgItem.setToUser(recipient);
                     convMsgItem.setMessageText(messageText);
                     convMsgItem.setIncoming(false);
 
@@ -143,7 +146,8 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         return new ThrowableLoader<List<ConversationMessageItem>>(getActivity(), items) {
             @Override
             public List<ConversationMessageItem> loadData() throws Exception {
-                return createNewConversationMessage();
+//                return createNewConversationMessage();
+                return Collections.emptyList();
             }
         };
     }
@@ -151,11 +155,6 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     @Override
     public void onLoadFinished(final Loader<List<ConversationMessageItem>> loader, final List<ConversationMessageItem> items) {
         super.onLoadFinished(loader, items);
-    }
-
-    public void onListItemClick(final ListView l, final View v, final int position, final long id) {
-        //final User user = ((User) l.getItemAtPosition(position));
-        //Object object = l.getItemAtPosition(position);
     }
 
     @Override
