@@ -43,7 +43,7 @@ public final class Constants {
         /**
          * Base URL for all requests
          */
-        public static final String URL_BASE = "https://auth.sageburner.com/sageburner/service";
+        public static final String URL_BASE = "https://auth.sageburner.com/service";
 //        public static final String URL_BASE = "https://api.parse.com";
 
 
@@ -74,7 +74,7 @@ public final class Constants {
          */
 //        public static final String PARAM_USERNAME = "username";
         //TODO: Fix lame hibernate interface to actually query by username
-        public static final String PARAM_USERNAME = "id";
+        public static final String PARAM_USERNAME = "username";
         public static final String PARAM_PASSWORD = "password";
 
 

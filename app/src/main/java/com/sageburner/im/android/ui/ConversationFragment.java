@@ -93,9 +93,10 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
                 if (!TextUtils.isEmpty(messageText)) {
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
-                    //temporary hack
+                    //TODO refactor temporary hack
                     recipient = new User();
                     recipient.setUsername("ryan@sageburner.com");
+
                     convMsgItem.setToUser(recipient);
                     convMsgItem.setMessageText(messageText);
                     convMsgItem.setIncoming(false);
@@ -146,8 +147,8 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         return new ThrowableLoader<List<ConversationMessageItem>>(getActivity(), items) {
             @Override
             public List<ConversationMessageItem> loadData() throws Exception {
-//                return createNewConversationMessage();
-                return Collections.emptyList();
+                return createNewConversationMessage();
+//                return Collections.emptyList();
             }
         };
     }
