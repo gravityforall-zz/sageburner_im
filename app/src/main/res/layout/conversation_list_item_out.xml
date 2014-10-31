@@ -19,10 +19,12 @@
                 android:id="@+id/tv_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/table_text_selector" />
-
+                android:textColor="@color/table_text_selector"
+                android:inputType="textMultiLine"
+                android:maxLines ="4"
+                android:maxLength ="2000"
+                android:scrollHorizontally="false"/>
     </LinearLayout>
 
     <ImageView
@@ -31,7 +33,6 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="15dp"
-            android:contentDescription="@string/avatar"
-            />
+            android:contentDescription="@string/avatar"/>
 
 </LinearLayout>
