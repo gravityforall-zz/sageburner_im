@@ -53,6 +53,10 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     private User recipient;
     private EditText msgInput;
 
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
+    }
+
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

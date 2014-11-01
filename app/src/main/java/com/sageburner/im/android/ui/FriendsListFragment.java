@@ -153,7 +153,11 @@ public class FriendsListFragment extends ItemListFragment<User> {
         //final User user = ((User) l.getItemAtPosition(position));
 
         ViewPager pager = (ViewPager) getActivity().findViewById(R.id.vp_pages);
-        pager.setCurrentItem(1, true);
+        BootstrapPagerAdapter bootstrapPagerAdapter = (BootstrapPagerAdapter) pager.getAdapter();
+        int fragmentIndex = bootstrapPagerAdapter.addFragment(new ConversationFragment(), "poo");
+        bootstrapPagerAdapter.notifyDataSetChanged();
+
+        pager.setCurrentItem(fragmentIndex, true);
     }
 
     @Override

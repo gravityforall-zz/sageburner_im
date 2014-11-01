@@ -35,7 +35,12 @@ public class CarouselFragment extends Fragment {
 
         Views.inject(this, getView());
 
-        pager.setAdapter(new BootstrapPagerAdapter(getResources(), getChildFragmentManager()));
+        BootstrapPagerAdapter bootstrapPagerAdapter = new BootstrapPagerAdapter(getResources(), getChildFragmentManager());
+
+        bootstrapPagerAdapter.addFragment(new FriendsListFragment(), "friends");
+//        bootstrapPagerAdapter.addFragment(new ConversationFragment());
+
+        pager.setAdapter(bootstrapPagerAdapter);
         indicator.setViewPager(pager);
         pager.setCurrentItem(0);
 

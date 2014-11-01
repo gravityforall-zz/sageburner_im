@@ -30,7 +30,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/table_text_selector"
                 android:inputType="textMultiLine"
-                android:maxLines ="4"
                 android:maxLength ="2000"
                 android:scrollHorizontally="false"/>
     </LinearLayout>
