@@ -23,6 +23,8 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
     // This holds the titles of all the currently available fragments
     private List<String> fragmentTitles = new ArrayList<String>();
 
+    private FragmentManager fragmentManager;
+
 
     /**
      * Create pager adapter
@@ -33,6 +35,7 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
     public BootstrapPagerAdapter(final Resources resources, final FragmentManager fragmentManager) {
         super(fragmentManager);
         this.resources = resources;
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -40,37 +43,54 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
         return fragments.size();
     }
 
-    //-----------------------------------------------------------------------------
-    // Add "view" to right end of "views".
-    // Returns the position of the new view.
-    // The app should call this to add pages; not used by ViewPager.
+    /**
+     * Add "view" to right end of "views".
+     * Returns the position of the new view.
+     * The app should call this to add pages; not used by ViewPager.
+     *
+     * @param f
+     * @param title
+     */
     public int addFragment(Fragment f, String title)
     {
         return addFragment (f, title, fragments.size());
     }
 
-    //-----------------------------------------------------------------------------
-    // Add "view" at "position" to "views".
-    // Returns position of new view.
-    // The app should call this to add pages; not used by ViewPager.
+    /**
+     * Add "view" at "position" to "views".
+     * Returns position of new view.
+     * The app should call this to add pages; not used by ViewPager.
+     *
+     * @param f
+     * @param title
+     * @param position
+     */
     public int addFragment(Fragment f, String title, int position) {
         fragments.add(position, f);
         fragmentTitles.add(position, title);
         return position;
     }
 
-    //-----------------------------------------------------------------------------
-    // Removes "fragment" from "fragments".
-    // Returns position of removed view.
-    // The app should call this to remove pages; not used by ViewPager.
+    /**
+     * Removes "fragment" from "fragments".
+     * Returns position of removed view.
+     * The app should call this to remove pages; not used by ViewPager.
+     *
+     * @param pager
+     * @param f
+     */
     public int removeFragment(ViewPager pager, Fragment f) {
         return removeFragment(pager, fragments.indexOf(f));
     }
 
-    //-----------------------------------------------------------------------------
-    // Removes the "view" at "position" from "views".
-    // Retuns position of removed view.
-    // The app should call this to remove pages; not used by ViewPager.
+    /**
+     * Removes the "view" at "position" from "views".
+     * Retuns position of removed view.
+     * The app should call this to remove pages; not used by ViewPager.
+     *
+     * @param pager
+     * @param position
+     */
     public int removeFragment(ViewPager pager, int position) {
         // ViewPager doesn't have a delete method; the closest is to set the adapter
         // again.  When doing so, it deletes all its views.  Then we can delete the view
@@ -78,6 +98,10 @@ public class BootstrapPagerAdapter extends FragmentPagerAdapter {
         // that we set the adapter to null before removing the view from "views" - that's
         // because while ViewPager deletes all its views, it will call destroyItem which
         // will in turn cause a null pointer ref.
+
+        Fragment f = fragments.get(position);
+        fragmentManager.beginTransaction().remove(f).commit();
+
         pager.setAdapter(null);
         fragments.remove(position);
         fragmentTitles.remove(position);
