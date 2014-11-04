@@ -1,39 +1,27 @@
 package com.sageburner.im.android.ui;
 
-import android.accounts.OperationCanceledException;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import butterknife.InjectView;
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
 import com.sageburner.im.android.authenticator.XMPPService;
-import com.sageburner.im.android.core.ConversationMessageItem;
 import com.sageburner.im.android.core.User;
-import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.RosterListener;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
-import org.jivesoftware.smack.util.StringUtils;
 
 import javax.inject.Inject;
-import java.util.*;
-
-import static com.sageburner.im.android.core.Constants.Extra.USER;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class FriendsListFragment extends ItemListFragment<User> {
 
@@ -118,28 +106,6 @@ public class FriendsListFragment extends ItemListFragment<User> {
                 } else {
                     return Collections.emptyList();
                 }
-
-                //old code below.
-                //I left this here to see how they were utilizing serviceProvider
-/*                try {
-                    List<User> latest = null;
-
-                    if (getActivity() != null) {
-                        latest = serviceProvider.getService(getActivity()).getUsers();
-                    }
-
-                    if (latest != null) {
-                        return latest;
-                    } else {
-                        return Collections.emptyList();
-                    }
-                } catch (final OperationCanceledException e) {
-                    final Activity activity = getActivity();
-                    if (activity != null) {
-                        activity.finish();
-                    }
-                    return initialItems;
-                }*/
             }
         };
     }
@@ -150,11 +116,21 @@ public class FriendsListFragment extends ItemListFragment<User> {
     }
 
     public void onListItemClick(final ListView l, final View v, final int position, final long id) {
-        //final User user = ((User) l.getItemAtPosition(position));
+        final User user = ((User) l.getItemAtPosition(position));
 
         ViewPager pager = (ViewPager) getActivity().findViewById(R.id.vp_pages);
         BootstrapPagerAdapter bootstrapPagerAdapter = (BootstrapPagerAdapter) pager.getAdapter();
-        int fragmentIndex = bootstrapPagerAdapter.addFragment(new ConversationFragment(), "poo");
+
+        ConversationFragment conversationFragment = new ConversationFragment();
+        conversationFragment.setRecipient(user);
+
+        //TODO allow app to persist previous fragment data (conversation list array) - but only for session
+        if (bootstrapPagerAdapter.getCount() > 1 && bootstrapPagerAdapter.getItem(1) != null) {
+//            ViewGroup container = ((ViewGroup)getView().getParent());
+//            container.removeView(bootstrapPagerAdapter.getItem(1).getView());
+            bootstrapPagerAdapter.removeFragment(pager, 1);
+        }
+        int fragmentIndex = bootstrapPagerAdapter.addFragment(conversationFragment, user.getAlias(), 1);
         bootstrapPagerAdapter.notifyDataSetChanged();
 
         pager.setCurrentItem(fragmentIndex, true);
@@ -182,7 +158,10 @@ public class FriendsListFragment extends ItemListFragment<User> {
 
         for (RosterEntry entry : entries) {
             user = new User();
-            user.setUsername(entry.getUser());
+
+            String username = entry.getUser();
+            user.setUsername(username);
+            user.setAlias(username.split("@")[0]);
 
             entryPresence = roster.getPresence(entry.getUser());
             Presence.Type type = entryPresence.getType();

@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import butterknife.InjectView;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.Injector;
@@ -28,13 +26,11 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.util.StringUtils;
 
+import javax.inject.Inject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import javax.inject.Inject;
 
 public class ConversationFragment extends ItemListFragment<ConversationMessageItem> {
 
@@ -93,13 +89,11 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         send.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 String messageText = msgInput.getText().toString();
-                Log.i("XMPPChatDemoActivity ", "Sending text " + messageText + " to " + recipient);
 
                 if (!TextUtils.isEmpty(messageText)) {
+                    Log.i("ConversationFragment ", "Sending text " + messageText + " to " + recipient.getUsername());
+
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
-                    //TODO refactor temporary hack
-                    recipient = new User();
-                    recipient.setUsername("ryan@sageburner.com");
 
                     convMsgItem.setToUser(recipient);
                     convMsgItem.setMessageText(messageText);
@@ -110,7 +104,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                         items.add(convMsgItem);
                         conversationListAdapter.setItems(items);
                     } catch (Exception e) {
-                        Log.e("XMPPChatDemoActivity ", "Sending text to " + recipient + " failed!");
+                        Log.e("ConversationFragment ", "Sending text to " + recipient + " failed!");
                     }
                 }
 
@@ -126,7 +120,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                 Message message = (Message) packet;
                 if (message.getBody() != null) {
                     String fromName = StringUtils.parseBareAddress(message.getFrom());
-                    Log.i("XMPPChatDemoActivity ", " Text Recieved " + message.getBody() + " from " + fromName);
+                    Log.i("ConversationFragment ", " Text Recieved " + message.getBody() + " from " + fromName);
 
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
                     convMsgItem.setMessageText(message.getBody());

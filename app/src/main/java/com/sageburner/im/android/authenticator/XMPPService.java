@@ -1,13 +1,8 @@
 package com.sageburner.im.android.authenticator;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
-import android.content.Context;
 import android.util.Log;
 import com.sageburner.im.android.core.Constants;
 import com.sageburner.im.android.core.ConversationMessageItem;
-import com.sageburner.im.android.core.User;
 import com.sageburner.im.android.util.Ln;
 import com.sageburner.im.android.util.SafeAsyncTask;
 import org.jivesoftware.smack.*;
@@ -16,10 +11,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 
-import javax.inject.Inject;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 
 /**
@@ -72,17 +64,17 @@ public class XMPPService {
 
             try {
                 xmppConn.connect();
-                Log.i("XMPPChatDemoActivity", "[SettingsDialog] Connected to " + xmppConn.getHost());
+                Log.i("XMPPService", "[SettingsDialog] Connected to " + xmppConn.getHost());
             } catch (Exception ex) {
-                Log.e("XMPPChatDemoActivity",  "[SettingsDialog] Failed to connect to "+ xmppConn.getHost());
-                Log.e("XMPPChatDemoActivity", ex.toString());
+                Log.e("XMPPService",  "[SettingsDialog] Failed to connect to "+ xmppConn.getHost());
+                Log.e("XMPPService", ex.toString());
                 xmppConn = null;
             }
 
             try {
                 //log in
                 xmppConn.login(Constants.XMPP.USERNAME, Constants.XMPP.PASSWORD);
-                Log.i("XMPPChatDemoActivity",  "Logged in as" + xmppConn.getUser());
+                Log.i("XMPPService",  "Logged in as" + xmppConn.getUser());
 
                 // Set the status to available
                 Presence presence = new Presence(Presence.Type.available);
@@ -94,25 +86,25 @@ public class XMPPService {
                 Collection<RosterEntry> entries = roster.getEntries();
                 for (RosterEntry entry : entries) {
 
-                    Log.d("XMPPChatDemoActivity",  "--------------------------------------");
-                    Log.d("XMPPChatDemoActivity", "RosterEntry " + entry);
-                    Log.d("XMPPChatDemoActivity", "User: " + entry.getUser());
-                    Log.d("XMPPChatDemoActivity", "Name: " + entry.getName());
-                    Log.d("XMPPChatDemoActivity", "Status: " + entry.getStatus());
-                    Log.d("XMPPChatDemoActivity", "Type: " + entry.getType());
+                    Log.d("XMPPService",  "--------------------------------------");
+                    Log.d("XMPPService", "RosterEntry " + entry);
+                    Log.d("XMPPService", "User: " + entry.getUser());
+                    Log.d("XMPPService", "Name: " + entry.getName());
+                    Log.d("XMPPService", "Status: " + entry.getStatus());
+                    Log.d("XMPPService", "Type: " + entry.getType());
                     Presence entryPresence = roster.getPresence(entry.getUser());
 
-                    Log.d("XMPPChatDemoActivity", "Presence Status: "+ entryPresence.getStatus());
-                    Log.d("XMPPChatDemoActivity", "Presence Type: " + entryPresence.getType());
+                    Log.d("XMPPService", "Presence Status: "+ entryPresence.getStatus());
+                    Log.d("XMPPService", "Presence Type: " + entryPresence.getType());
 
                     Presence.Type type = entryPresence.getType();
                     if (type == Presence.Type.available)
-                        Log.d("XMPPChatDemoActivity", "Presence AVIALABLE");
-                        Log.d("XMPPChatDemoActivity", "Presence : " + entryPresence);
+                        Log.d("XMPPService", "Presence AVIALABLE");
+                        Log.d("XMPPService", "Presence : " + entryPresence);
                 }
             } catch (Exception ex) {
-                Log.e("XMPPChatDemoActivity", "Failed to log in as "+  Constants.XMPP.USERNAME);
-                Log.e("XMPPChatDemoActivity", ex.toString());
+                Log.e("XMPPService", "Failed to log in as "+  Constants.XMPP.USERNAME);
+                Log.e("XMPPService", ex.toString());
                 xmppConn = null;
             }
 

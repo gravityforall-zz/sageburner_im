@@ -1,7 +1,5 @@
 package com.sageburner.im.android.core;
 
-import android.text.TextUtils;
-
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -13,6 +11,7 @@ public class User implements Serializable {
     private String password;
     private String firstName;
     private String lastName;
+    private String alias;
     private String phone;
     private String sessionToken;
     private String publicKey;
@@ -77,6 +76,14 @@ public class User implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public String getPhone() {
