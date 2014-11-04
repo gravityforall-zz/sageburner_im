@@ -104,6 +104,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
     private String password;
 
+    private User user;
+
 
     /**
      * In this instance the token is simply the sessionId returned from Parse.com. This could be a
@@ -259,8 +261,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                 final String query = String.format("%s=%s&%s=%s",
                         PARAM_USERNAME, email, PARAM_PASSWORD, password);
 
-                User loginResponse = bootstrapService.authenticate(email, password);
-                token = loginResponse.getSessionToken();
+                user = bootstrapService.authenticate(email, password);
+                token = user.getSessionToken();
 
                 return true;
             }

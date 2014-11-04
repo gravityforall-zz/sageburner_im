@@ -39,8 +39,8 @@ public class MainActivity extends BootstrapFragmentActivity {
     @Inject protected LogoutService logoutService;
     @Inject protected XMPPService xmppService;
 
-    //private boolean userHasAuthenticated = false;
-    private boolean userHasAuthenticated = true;
+    private boolean userHasAuthenticated = false;
+    //private boolean userHasAuthenticated = true;
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
