@@ -5,68 +5,56 @@ import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.encoders.Hex;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.util.Arrays;
 
 /**
  * Created by Ryan on 11/30/2014.
  */
 public class CryptoUtils {
+
     private static final String CRYPTO_ALGORITHM = "AES";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/CBC/PKCS5Padding";
     private static final String CRYPTO_ALGORITHM_MODE = "AES/ECB/PKCS7Padding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/CBC/PKCS7Padding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/OFB/NoPadding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/CFB/NoPadding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/ECB/PKCS7Padding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/CBC/PKCS7Padding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/OFB/NoPadding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/CFB/NoPadding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/ECB/PKCS7Padding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/CBC/PKCS7Padding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/OFB/NoPadding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/CFB/NoPadding";
-    //private static final String CRYPTO_ALGORITHM_MODE = "AES/ECB/NoPadding";
-    //128
-    //private static final String keyValue = "000102030405060708090a0b0c0d0e0f";
-    //192
-    //private static final String keyValue = "000102030405060708090a0b0c0d0e0f1011121314151617";
-    //256
-    private static final String keyValue = "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f";
 
-
-    public static String encrypt(String inKey, String plaintext) throws Exception {
-        Key key = generateKey(inKey);
+    private static String encrypt(Key inKey, String plaintext) throws Exception {
         Cipher cipher = Cipher.getInstance(CRYPTO_ALGORITHM_MODE, new BouncyCastleProvider());
-        cipher.init(Cipher.ENCRYPT_MODE, key);
+        cipher.init(Cipher.ENCRYPT_MODE, inKey);
         byte[] encrypted = cipher.doFinal(plaintext.getBytes());
         byte[] encryptedValue = Base64.encode(encrypted);
         return new String(encryptedValue);
     }
 
-    public static String decrypt(String inKey, String ciphertext) throws Exception {
-        Key key = generateKey(inKey);
+    private static String decrypt(Key inKey, String ciphertext) throws Exception {
         Cipher cipher = Cipher.getInstance(CRYPTO_ALGORITHM_MODE, new BouncyCastleProvider());
-        cipher.init(Cipher.DECRYPT_MODE, key);
+        cipher.init(Cipher.DECRYPT_MODE, inKey);
         byte[] decodedBytes = Base64.decode(ciphertext.getBytes());
         byte[] original = cipher.doFinal(decodedBytes);
         return new String(original);
     }
 
-    private static Key generateKey(String inKey) throws Exception {
-        Key key = new SecretKeySpec(Hex.decode(inKey), CRYPTO_ALGORITHM);
-        return key;
+    private static Key generateKey() throws Exception {
+        KeyGenerator keyGenerator = KeyGenerator.getInstance(CRYPTO_ALGORITHM);
+        keyGenerator.init(256);
+        return keyGenerator.generateKey();
+    }
+
+    public static CryptoMessage createCryptoMessage(String inMessage) throws Exception {
+        Key key = generateKey();
+        String encryptedMessage = encrypt(key, inMessage);
+        return new CryptoMessage(encryptedMessage, key);
     }
 
     public static void main(String[] args) throws Exception {
 
-        //String data = "00112233445566778899aabbccddeeff";
-        String data = "Hello There!";
-        String dataEnc = encrypt(keyValue, data);
-        String dataDec = decrypt(keyValue, dataEnc);
-
+        String data = "Yabba Dabba Do!";
+        CryptoMessage cryptoMessage = createCryptoMessage(data);
         System.out.println("Plain Text : " + data);
-        System.out.println("Encrypted Text : " + dataEnc);
-        System.out.println("Decrypted Text : " + dataDec);
+        System.out.println("Key: " + Arrays.toString(cryptoMessage.getKey().getEncoded()));
+        System.out.println("Encrypted Text : " + cryptoMessage.getMessage());
+        System.out.println("Decrypted Text : " + decrypt(cryptoMessage.getKey(), cryptoMessage.getMessage()));
+
     }
 }
