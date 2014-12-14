@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class FriendsListAdapter extends AlternatingColorListAdapter<User> {
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MMMM dd");
-
     /**
      * @param inflater
      * @param items

@@ -47,6 +47,10 @@ public class XMPPService {
         new SendMessageTask(convMsgItem, onSuccess).execute();
     }
 
+    public void addFriend(XMPPConnection xmppConn, String userName, final Runnable onSuccess) {
+        new AddFriendTask(xmppConn, userName, onSuccess).execute();
+    }
+
     private class ConnectTask extends SafeAsyncTask<Boolean> {
 
         private final Runnable onSuccess;
@@ -200,6 +204,49 @@ public class XMPPService {
             super.onException(e);
 
             Ln.e(e.getCause(), "Message send failed.");
+        }
+    }
+
+    private class AddFriendTask extends SafeAsyncTask<Boolean> {
+
+        private final XMPPConnection xmppConn;
+        private final String userName;
+        private final Runnable onSuccess;
+
+        protected AddFriendTask(XMPPConnection xmppConn, String userName, final Runnable onSuccess) {
+            this.xmppConn = xmppConn;
+            this.userName = userName;
+            this.onSuccess = onSuccess;
+        }
+
+        @Override
+        public Boolean call() throws Exception {
+            //public void createEntry(String user, String name, String[] groups) throws XMPPException
+
+            //user - the user. (e.g. johndoe@jabber.org)
+            //name - the nickname of the user.
+            //groups - the list of group names the entry will belong to, or null if the the roster entry won't belong to a group.
+
+            Roster roster = xmppConn.getRoster();
+            roster.createEntry(userName, null, null);
+            return true;
+        }
+
+        @Override
+        protected void onSuccess(final Boolean addFriendSuccess) throws Exception {
+            //TODO: implement onSuccess method
+            super.onSuccess(addFriendSuccess);
+
+            Ln.d("Add friend successful: %s", addFriendSuccess);
+            onSuccess.run();
+        }
+
+        @Override
+        protected void onException(final Exception e) throws RuntimeException {
+            //TODO: implement onException method
+            super.onException(e);
+
+            Ln.e(e.getCause(), "Add friend failed.");
         }
     }
 }
