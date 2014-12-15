@@ -16,7 +16,7 @@ import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
-import com.sageburner.im.android.authenticator.XMPPService;
+import com.sageburner.im.android.service.XMPPService;
 import com.sageburner.im.android.core.ConversationMessageItem;
 import com.sageburner.im.android.core.User;
 import org.jivesoftware.smack.PacketListener;

@@ -16,7 +16,7 @@ import com.github.kevinsawicki.wishlist.Toaster;
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
-import com.sageburner.im.android.authenticator.XMPPService;
+import com.sageburner.im.android.service.XMPPService;
 import com.sageburner.im.android.core.BootstrapService;
 import com.sageburner.im.android.events.NavItemSelectedEvent;
 import com.sageburner.im.android.util.Ln;

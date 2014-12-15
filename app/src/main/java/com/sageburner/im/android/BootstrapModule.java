@@ -1,18 +1,15 @@
 package com.sageburner.im.android;
 
 import android.accounts.AccountManager;
-import android.content.Context;
 
 import com.sageburner.im.android.authenticator.ApiKeyProvider;
 import com.sageburner.im.android.authenticator.BootstrapAuthenticatorActivity;
-import com.sageburner.im.android.authenticator.LogoutService;
-import com.sageburner.im.android.authenticator.XMPPService;
+import com.sageburner.im.android.service.XMPPService;
 import com.sageburner.im.android.core.BootstrapService;
 import com.sageburner.im.android.core.Constants;
 import com.sageburner.im.android.core.PostFromAnyThreadBus;
 import com.sageburner.im.android.core.RestAdapterRequestInterceptor;
 import com.sageburner.im.android.core.RestErrorHandler;
-import com.sageburner.im.android.core.TimerService;
 import com.sageburner.im.android.core.UserAgentProvider;
 import com.sageburner.im.android.ui.*;
 import com.google.gson.Gson;

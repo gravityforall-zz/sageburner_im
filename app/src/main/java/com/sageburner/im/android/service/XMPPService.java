@@ -1,4 +1,4 @@
-package com.sageburner.im.android.authenticator;
+package com.sageburner.im.android.service;
 
 import android.util.Log;
 import com.sageburner.im.android.core.Constants;
