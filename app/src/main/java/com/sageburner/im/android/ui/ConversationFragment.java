@@ -19,6 +19,8 @@ import com.sageburner.im.android.authenticator.LogoutService;
 import com.sageburner.im.android.service.XMPPService;
 import com.sageburner.im.android.core.ConversationMessageItem;
 import com.sageburner.im.android.core.User;
+import com.sageburner.im.android.util.CryptoMessage;
+import com.sageburner.im.android.util.CryptoUtils;
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
@@ -94,9 +96,16 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                     Log.i("ConversationFragment ", "Sending text " + messageText + " to " + recipient.getUsername());
 
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
-
                     convMsgItem.setToUser(recipient);
-                    convMsgItem.setMessageText(messageText);
+
+                    CryptoMessage cryptoMessage = null;
+                    try {
+                        cryptoMessage = CryptoUtils.createCryptoMessage(messageText);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    convMsgItem.setMessage(cryptoMessage);
+
                     convMsgItem.setIncoming(false);
 
                     try {
@@ -123,7 +132,15 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                     Log.i("ConversationFragment ", " Text Recieved " + message.getBody() + " from " + fromName);
 
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
-                    convMsgItem.setMessageText(message.getBody());
+
+                    CryptoMessage cryptoMessage = null;
+                    try {
+                        cryptoMessage = CryptoUtils.createCryptoMessage(message.getBody());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    convMsgItem.setMessage(cryptoMessage);
+
                     convMsgItem.setIncoming(true);
                     items.add(convMsgItem);
 
@@ -176,7 +193,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         });
     }
 
-    private List<ConversationMessageItem> createNewConversationMessage() {
+    private List<ConversationMessageItem> createNewConversationMessage() throws Exception {
         List<ConversationMessageItem> msgList = new ArrayList<ConversationMessageItem>();
 
         User system = new User();
@@ -190,7 +207,8 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         msgItem.setFromUser(system);
         msgItem.setToUser(user1);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM d h:mm");
-        msgItem.setMessageText(sdf.format(new Date()));
+        CryptoMessage cryptoMessage = CryptoUtils.createCryptoMessage(sdf.format(new Date()));
+        msgItem.setMessage(cryptoMessage);
         msgList.add(msgItem);
 
         return msgList;

@@ -141,4 +141,13 @@ public final class Constants {
         public static final String PASSWORD = "password";
     }
 
+    public static final class Crypto {
+        private Crypto() {
+        }
+
+        /**
+         * XMPP Host
+         */
+        public static final String CRYPTO_MESSAGE_SEPARATOR = ";";
+    }
 }

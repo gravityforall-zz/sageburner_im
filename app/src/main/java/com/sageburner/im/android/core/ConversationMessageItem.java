@@ -1,5 +1,7 @@
 package com.sageburner.im.android.core;
 
+import com.sageburner.im.android.util.CryptoMessage;
+
 /**
  * Created by Ryan on 10/10/2014.
  */
@@ -7,7 +9,7 @@ public class ConversationMessageItem {
     boolean isIncoming;
     User toUser;
     User fromUser;
-    String messageText;
+    CryptoMessage message;
     String objectId;
     String avatarUrl;
 
@@ -35,12 +37,12 @@ public class ConversationMessageItem {
         this.toUser = toUser;
     }
 
-    public String getMessageText() {
-        return messageText;
+    public CryptoMessage getMessage() {
+        return message;
     }
 
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
+    public void setMessage(CryptoMessage message) {
+        this.message = message;
     }
 
     public String getObjectId() {

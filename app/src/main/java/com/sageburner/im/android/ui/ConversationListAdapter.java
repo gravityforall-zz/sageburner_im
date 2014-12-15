@@ -64,7 +64,7 @@ public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessa
                 .into(imageView(0));
 
 //        setText(1, String.format("%1$s %2$s", conversationMessageItem.getToUser().getFirstName(), conversationMessageItem.getToUser().getLastName()));
-        setText(1, String.format("%s",conversationMessageItem.getMessageText()));
+        setText(1, String.format("%s",conversationMessageItem.getMessage().toString()));
     }
 
 //    @Override
@@ -104,7 +104,7 @@ public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessa
         //convertView.findViewById(R.id.iv_avatar).setBackgroundColor(Color.BLUE);
 
 //        String name = msgItem.getFromUser().getUsername();
-        String msgText = msgItem.getMessageText();
+        String msgText = msgItem.getMessage().toString();
         ((TextView)convertView.findViewById(R.id.tv_message)).setText(msgText);
 
         return convertView;

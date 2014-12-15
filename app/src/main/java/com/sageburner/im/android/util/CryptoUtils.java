@@ -47,14 +47,41 @@ public class CryptoUtils {
         return new CryptoMessage(encryptedMessage, key);
     }
 
+    public static byte[] parseKey(String cryptoMessage) {
+        int separatorPos = cryptoMessage.lastIndexOf(";");
+        String keyString = cryptoMessage.substring(separatorPos + 1);
+        return Base64.decode(keyString.getBytes());
+    }
+
     public static void main(String[] args) throws Exception {
 
+        System.out.println("=================================================");
+        System.out.println("Testing basic encryption/decryption functionality");
         String data = "Yabba Dabba Do!";
         CryptoMessage cryptoMessage = createCryptoMessage(data);
         System.out.println("Plain Text : " + data);
-        System.out.println("Key: " + Arrays.toString(cryptoMessage.getKey().getEncoded()));
         System.out.println("Encrypted Text : " + cryptoMessage.getMessage());
         System.out.println("Decrypted Text : " + decrypt(cryptoMessage.getKey(), cryptoMessage.getMessage()));
+        System.out.println("=================================================");
+
+        System.out.println("=================================================");
+        System.out.println("Testing encryption/decryption with 'marshalling'");
+        //Test creating a message string and reading it back
+        data = "This text has been encrypted, stringified, and decrypted!";
+        cryptoMessage = createCryptoMessage(data);
+        System.out.println("Plain Text : " + data);
+        System.out.println("Encrypted Text : " + cryptoMessage.getMessage());
+
+        System.out.println("Key getEncoded() : " + cryptoMessage.getKey().getEncoded());
+        String cryptoMessageString = cryptoMessage.toString();
+        String keyString = new String(parseKey(cryptoMessageString));
+        byte[] keyBytes = parseKey(cryptoMessageString);
+        System.out.println("cryptoMessageString : " + cryptoMessageString);
+        System.out.println("keyString : " + keyString);
+        Key key = new SecretKeySpec(keyBytes, CRYPTO_ALGORITHM);
+
+        System.out.println("Decrypted Text : " + decrypt(key, cryptoMessage.getMessage()));
+        System.out.println("=================================================");
 
     }
 }
