@@ -1,5 +1,7 @@
 package com.sageburner.im.android.util;
 
+import android.util.Log;
+import com.sageburner.im.android.core.Constants;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 import org.bouncycastle.util.encoders.Hex;
@@ -16,8 +18,8 @@ import java.util.Arrays;
  */
 public class CryptoUtils {
 
-    private static final String CRYPTO_ALGORITHM = "AES";
-    private static final String CRYPTO_ALGORITHM_MODE = "AES/ECB/PKCS7Padding";
+    private static final String CRYPTO_ALGORITHM = Constants.Crypto.CRYPTO_ALGORITHM;
+    private static final String CRYPTO_ALGORITHM_MODE = Constants.Crypto.CRYPTO_ALGORITHM_MODE;
 
     private static String encrypt(Key inKey, String plaintext) throws Exception {
         Cipher cipher = Cipher.getInstance(CRYPTO_ALGORITHM_MODE, new BouncyCastleProvider());
@@ -47,6 +49,11 @@ public class CryptoUtils {
         return new CryptoMessage(encryptedMessage, key);
     }
 
+    public static CryptoMessage createCryptoMessage(String inMessage, Key inKey) throws Exception {
+        //String encryptedMessage = encrypt(inKey, inMessage);
+        return new CryptoMessage(inMessage, inKey);
+    }
+
     public static String parseMessage(String cryptoMessage) {
         int separatorPos = cryptoMessage.lastIndexOf(";");
         String messageString = cryptoMessage.substring(0, separatorPos);
@@ -56,6 +63,7 @@ public class CryptoUtils {
     public static byte[] parseKey(String cryptoMessage) {
         int separatorPos = cryptoMessage.lastIndexOf(";");
         String keyString = cryptoMessage.substring(separatorPos + 1);
+        Log.d("CryptoUtils::parseKey: ", " keyString: " + keyString);
         return Base64.decode(keyString.getBytes());
     }
 

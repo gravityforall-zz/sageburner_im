@@ -16,6 +16,7 @@ import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
+import com.sageburner.im.android.core.Constants;
 import com.sageburner.im.android.service.XMPPService;
 import com.sageburner.im.android.core.ConversationMessageItem;
 import com.sageburner.im.android.core.User;
@@ -28,7 +29,9 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.util.StringUtils;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
+import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,6 +104,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                     CryptoMessage cryptoMessage = null;
                     try {
                         cryptoMessage = CryptoUtils.createCryptoMessage(messageText);
+                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessage.toString(): " + cryptoMessage.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -113,7 +117,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                         items.add(convMsgItem);
                         conversationListAdapter.setItems(items);
                     } catch (Exception e) {
-                        Log.e("ConversationFragment ", "Sending text to " + recipient + " failed!");
+                        Log.e("ConversationFragment::onViewCreated: ", "Sending text to " + recipient + " failed!");
                     }
                 }
 
@@ -129,13 +133,24 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                 Message message = (Message) packet;
                 if (message.getBody() != null) {
                     String fromName = StringUtils.parseBareAddress(message.getFrom());
-                    Log.i("ConversationFragment ", " Text Recieved " + message.getBody() + " from " + fromName);
+                    Log.d("ConversationFragment::onViewCreated: ", " Text Recieved " + message.getBody() + " from " + fromName);
 
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
 
                     CryptoMessage cryptoMessage = null;
+                    String messageBody = null;
+                    String cryptoMessageText = null;
+                    byte[] cryptoMessageKeyBytes = null;
+                    Key cryptoMessageKey = null;
                     try {
-                        cryptoMessage = CryptoUtils.createCryptoMessage(message.getBody());
+                        messageBody = message.getBody();
+                        cryptoMessageText = CryptoUtils.parseMessage(messageBody);
+                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessageText: " + cryptoMessageText);
+                        cryptoMessageKeyBytes = CryptoUtils.parseKey(messageBody);
+                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessageKeyBytes: " + new String(cryptoMessageKeyBytes));
+                        cryptoMessageKey = new SecretKeySpec(cryptoMessageKeyBytes, Constants.Crypto.CRYPTO_ALGORITHM);
+                        cryptoMessage = CryptoUtils.createCryptoMessage(cryptoMessageText, cryptoMessageKey);
+                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessage: " + cryptoMessage.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

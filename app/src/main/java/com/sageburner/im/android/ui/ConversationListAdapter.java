@@ -15,6 +15,7 @@ import com.sageburner.im.android.R;
 import com.sageburner.im.android.core.ConversationMessageItem;
 import com.sageburner.im.android.core.ConversationViewHolder;
 import com.sageburner.im.android.core.User;
+import com.sageburner.im.android.util.CryptoUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -82,29 +83,19 @@ public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessa
 
         Log.i("XMPPChatDemoActivity ", "layoutId: " + layoutId);
 
-        //viewholder
-//        ConversationViewHolder conViewHolder;
-//
-//        if (convertView == null) {
-//            //inflate view
-//            convertView = inflater.inflate(layoutId, parent, false);
-//            conViewHolder = new ConversationViewHolder();
-//            conViewHolder.setAvatar((ImageView) convertView.findViewById(R.id.iv_avatar));
-//            conViewHolder.setMessage((TextView) convertView.findViewById(R.id.tv_message));
-//
-//            convertView.setTag(conViewHolder);
-//        }
-
         convertView = inflater.inflate(layoutId, parent, false);
 
         Picasso.with(BootstrapApplication.getInstance())
                 .load("dummy_avatar_url")
                 .placeholder(R.drawable.gravatar_icon)
                 .into((ImageView)convertView.findViewById(R.id.iv_avatar));
-        //convertView.findViewById(R.id.iv_avatar).setBackgroundColor(Color.BLUE);
 
-//        String name = msgItem.getFromUser().getUsername();
-        String msgText = msgItem.getMessage().toString();
+        String msgText = null;
+        try {
+            msgText = CryptoUtils.readCryptoMessage(msgItem.getMessage().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ((TextView)convertView.findViewById(R.id.tv_message)).setText(msgText);
 
         return convertView;

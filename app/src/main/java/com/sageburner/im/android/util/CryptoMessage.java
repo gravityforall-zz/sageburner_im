@@ -33,9 +33,8 @@ public class CryptoMessage {
 
         sb.append(message);
         sb.append(Constants.Crypto.CRYPTO_MESSAGE_SEPARATOR);
-
-        byte[] encryptedValue = Base64.encode(key.getEncoded());
-        sb.append(new String(encryptedValue));
+        byte[] encodedKey = Base64.encode(key.getEncoded());
+        sb.append(new String(encodedKey));
 
         return sb.toString();
     }

@@ -146,7 +146,17 @@ public final class Constants {
         }
 
         /**
-         * XMPP Host
+         * Symmetric Crypto Algorithm
+         */
+        public static final String CRYPTO_ALGORITHM = "AES";
+
+        /**
+         * Symmetric Crypto Algorithm Mode
+         */
+        public static final String CRYPTO_ALGORITHM_MODE = "AES/ECB/PKCS7Padding";
+
+        /**
+         * AES Message Seaparator
          */
         public static final String CRYPTO_MESSAGE_SEPARATOR = ";";
     }
