@@ -5,6 +5,7 @@ package com.sageburner.im.android;
 import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
+import com.sageburner.im.android.core.User;
 
 /**
  * sageburner_im application
@@ -12,6 +13,16 @@ import android.content.Context;
 public class BootstrapApplication extends Application {
 
     private static BootstrapApplication instance;
+
+    private static User localUser;
+
+    public static User getLocalUser() {
+        return localUser;
+    }
+
+    public static void setLocalUser(User localUser) {
+        BootstrapApplication.localUser = localUser;
+    }
 
     /**
      * Create main application

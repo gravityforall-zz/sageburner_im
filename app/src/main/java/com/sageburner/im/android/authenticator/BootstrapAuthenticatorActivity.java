@@ -19,6 +19,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
@@ -29,6 +30,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.sageburner.im.android.BootstrapApplication;
 import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.R.id;
@@ -91,8 +93,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     private final TextWatcher watcher = validationTextWatcher();
 
     private SafeAsyncTask<Boolean> authenticationTask;
-    private String authToken;
-    private String authTokenType;
 
     /**
      * If set we are just checking that the user knows their credentials; this
@@ -103,16 +103,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
     private String email;
 
     private String password;
-
-    private User user;
-
-
-    /**
-     * In this instance the token is simply the sessionId returned from Parse.com. This could be a
-     * oauth token or some other type of timed token that expires/etc. We're just using the parse.com
-     * sessionId to prove the example of how to utilize a token.
-     */
-    private String token;
 
     /**
      * Was the original caller asking for an entirely new account?
@@ -129,7 +119,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
         final Intent intent = getIntent();
         email = intent.getStringExtra(PARAM_USERNAME);
-        authTokenType = intent.getStringExtra(PARAM_AUTHTOKEN_TYPE);
         confirmCredentials = intent.getBooleanExtra(PARAM_CONFIRM_CREDENTIALS, false);
 
         requestNewAccount = email == null;
@@ -167,10 +156,6 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
         emailText.addTextChangedListener(watcher);
         passwordText.addTextChangedListener(watcher);
-
-        //final TextView signUpText = (TextView) findViewById(id.tv_signup);
-        //signUpText.setMovementMethod(LinkMovementMethod.getInstance());
-        //signUpText.setText(Html.fromHtml(getString(string.signup_link)));
     }
 
     private List<String> userEmailAccounts() {
@@ -261,9 +246,9 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                 final String query = String.format("%s=%s&%s=%s",
                         PARAM_USERNAME, email, PARAM_PASSWORD, password);
 
-                user = bootstrapService.authenticate(email, password);
-                token = user.getSessionToken();
-
+                User user = bootstrapService.authenticate(email, password);
+                ((BootstrapApplication) BootstrapApplication.getInstance()).setLocalUser(user);
+                Log.d("BootstrapAuthenticatorActivity::handleLogin: ", " localUser username: " + ((BootstrapApplication) BootstrapApplication.getInstance()).getLocalUser().getUsername());
                 return true;
             }
 
@@ -326,16 +311,9 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
             accountManager.setPassword(account, password);
         }
 
-        authToken = token;
-
         final Intent intent = new Intent();
         intent.putExtra(KEY_ACCOUNT_NAME, email);
         intent.putExtra(KEY_ACCOUNT_TYPE, Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE);
-
-        if (authTokenType != null
-                && authTokenType.equals(Constants.Auth.AUTHTOKEN_TYPE)) {
-            intent.putExtra(KEY_AUTHTOKEN, authToken);
-        }
 
         setAccountAuthenticatorResult(intent.getExtras());
         setResult(RESULT_OK, intent);
@@ -430,8 +408,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                 final String query = String.format("%s=%s&%s=%s",
                         PARAM_USERNAME, email, PARAM_PASSWORD, password);
 
-                User loginResponse = bootstrapService.authenticate(email, password);
-                token = loginResponse.getSessionToken();
+                User user = bootstrapService.authenticate(email, password);
+                ((BootstrapApplication) getApplication()).setLocalUser(user);
 
                 return true;
             }

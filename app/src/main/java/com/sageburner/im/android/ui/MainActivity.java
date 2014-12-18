@@ -13,9 +13,11 @@ import android.view.View;
 import android.view.Window;
 import butterknife.Views;
 import com.github.kevinsawicki.wishlist.Toaster;
+import com.sageburner.im.android.BootstrapApplication;
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
+import com.sageburner.im.android.core.User;
 import com.sageburner.im.android.service.XMPPService;
 import com.sageburner.im.android.core.BootstrapService;
 import com.sageburner.im.android.events.NavItemSelectedEvent;
@@ -165,9 +167,11 @@ public class MainActivity extends BootstrapFragmentActivity {
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
                 super.onSuccess(hasAuthenticated);
                 userHasAuthenticated = true;
-                //Connect to XMPP server
-                connect();
 
+                //get localUser from application context
+                User user = ((BootstrapApplication) BootstrapApplication.getInstance()).getLocalUser();
+                //Connect to XMPP server
+                connect(user);
             }
         }.execute();
     }
@@ -232,8 +236,8 @@ public class MainActivity extends BootstrapFragmentActivity {
         return xmppService;
     }
 
-    private void connect() {
-        getXMPPService().connect(new Runnable() {
+    private void connect(User user) {
+        getXMPPService().connect(user, new Runnable() {
             @Override
             public void run() {
                 initScreen();

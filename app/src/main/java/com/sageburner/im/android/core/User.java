@@ -8,7 +8,8 @@ public class User implements Serializable {
 
     private String id;
     private String username;
-    private String password;
+    private String authPassword;
+    private String xmppPassword;
     private String firstName;
     private String lastName;
     private String alias;
@@ -54,12 +55,20 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAuthPassword() {
+        return authPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAuthPassword(String authPassword) {
+        this.authPassword = authPassword;
+    }
+
+    public String getXmppPassword() {
+        return xmppPassword;
+    }
+
+    public void setXmppPassword(String xmppPassword) {
+        this.xmppPassword = xmppPassword;
     }
 
     public String getFirstName() {

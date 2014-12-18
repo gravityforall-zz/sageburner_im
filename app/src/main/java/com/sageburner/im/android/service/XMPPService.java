@@ -1,10 +1,14 @@
 package com.sageburner.im.android.service;
 
+import android.content.Context;
 import android.util.Log;
+import com.sageburner.im.android.BootstrapApplication;
 import com.sageburner.im.android.core.Constants;
 import com.sageburner.im.android.core.ConversationMessageItem;
+import com.sageburner.im.android.core.User;
 import com.sageburner.im.android.util.Ln;
 import com.sageburner.im.android.util.SafeAsyncTask;
+import com.sageburner.im.android.util.UserUtils;
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Message;
@@ -35,8 +39,8 @@ public class XMPPService {
         return xmppConn.getRoster();
     }
 
-    public void connect(final Runnable onSuccess) {
-        new ConnectTask(onSuccess).execute();
+    public void connect(User user, final Runnable onSuccess) {
+        new ConnectTask(user, onSuccess).execute();
     }
 
     public void disconnect(final Runnable onSuccess) {
@@ -53,9 +57,11 @@ public class XMPPService {
 
     private class ConnectTask extends SafeAsyncTask<Boolean> {
 
+        private final User user;
         private final Runnable onSuccess;
 
-        protected ConnectTask(final Runnable onSuccess) {
+        protected ConnectTask(User user, final Runnable onSuccess) {
+            this.user = user;
             this.onSuccess = onSuccess;
         }
 
@@ -68,17 +74,23 @@ public class XMPPService {
 
             try {
                 xmppConn.connect();
-                Log.i("XMPPService", "[SettingsDialog] Connected to " + xmppConn.getHost());
+                Log.i("XMPPService::call: ", "[SettingsDialog] Connected to " + xmppConn.getHost());
             } catch (Exception ex) {
-                Log.e("XMPPService",  "[SettingsDialog] Failed to connect to "+ xmppConn.getHost());
-                Log.e("XMPPService", ex.toString());
+                Log.e("XMPPService::call: ",  "[SettingsDialog] Failed to connect to "+ xmppConn.getHost());
+                Log.e("XMPPService::call: ", ex.toString());
                 xmppConn = null;
             }
 
             try {
+                //get localUser from application context
+                //user = ((BootstrapApplication) BootstrapApplication.getInstance()).getLocalUser();
+                Log.d("XMPPService::call: ", " username: " + user.getUsername());
                 //log in
-                xmppConn.login(Constants.XMPP.USERNAME, Constants.XMPP.PASSWORD);
-                Log.i("XMPPService",  "Logged in as" + xmppConn.getUser());
+                String userAlias = UserUtils.parseUserAlias(user);
+                String password = user.getXmppPassword();
+                Log.d("XMPPService::call: ", " userAlias: " + userAlias);
+                xmppConn.login(userAlias, password);
+                Log.i("XMPPService::call: ",  "Logged in as" + xmppConn.getUser());
 
                 // Set the status to available
                 Presence presence = new Presence(Presence.Type.available);
@@ -90,25 +102,25 @@ public class XMPPService {
                 Collection<RosterEntry> entries = roster.getEntries();
                 for (RosterEntry entry : entries) {
 
-                    Log.d("XMPPService",  "--------------------------------------");
-                    Log.d("XMPPService", "RosterEntry " + entry);
-                    Log.d("XMPPService", "User: " + entry.getUser());
-                    Log.d("XMPPService", "Name: " + entry.getName());
-                    Log.d("XMPPService", "Status: " + entry.getStatus());
-                    Log.d("XMPPService", "Type: " + entry.getType());
+                    Log.d("XMPPService::call: ",  "--------------------------------------");
+                    Log.d("XMPPService::call: ", "RosterEntry " + entry);
+                    Log.d("XMPPService::call: ", "User: " + entry.getUser());
+                    Log.d("XMPPService::call: ", "Name: " + entry.getName());
+                    Log.d("XMPPService::call: ", "Status: " + entry.getStatus());
+                    Log.d("XMPPService::call: ", "Type: " + entry.getType());
                     Presence entryPresence = roster.getPresence(entry.getUser());
 
-                    Log.d("XMPPService", "Presence Status: "+ entryPresence.getStatus());
-                    Log.d("XMPPService", "Presence Type: " + entryPresence.getType());
+                    Log.d("XMPPService::call: ", "Presence Status: "+ entryPresence.getStatus());
+                    Log.d("XMPPService::call: ", "Presence Type: " + entryPresence.getType());
 
                     Presence.Type type = entryPresence.getType();
                     if (type == Presence.Type.available)
-                        Log.d("XMPPService", "Presence AVIALABLE");
-                        Log.d("XMPPService", "Presence : " + entryPresence);
+                        Log.d("XMPPService::call: ", "Presence AVIALABLE");
+                        Log.d("XMPPService::call: ", "Presence : " + entryPresence);
                 }
             } catch (Exception ex) {
-                Log.e("XMPPService", "Failed to log in as "+  Constants.XMPP.USERNAME);
-                Log.e("XMPPService", ex.toString());
+                Log.e("XMPPService::call: ", "Failed to log in as "+  user.getUsername());
+                Log.e("XMPPService::call:", ex.toString());
                 xmppConn = null;
             }
 

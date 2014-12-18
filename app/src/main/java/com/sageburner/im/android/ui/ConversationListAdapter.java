@@ -81,7 +81,7 @@ public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessa
             layoutId = R.layout.conversation_list_item_out;
         }
 
-        Log.i("XMPPChatDemoActivity ", "layoutId: " + layoutId);
+        Log.i("ConversationListAdapter::getView: ", "layoutId: " + layoutId);
 
         convertView = inflater.inflate(layoutId, parent, false);
 
