@@ -1,16 +1,11 @@
 
 
-package com.sageburner.im.android.core.core;
+package com.sageburner.im.android.core;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 
-import com.sageburner.im.android.core.BootstrapService;
-import com.sageburner.im.android.core.CheckIn;
-import com.sageburner.im.android.core.News;
-import com.sageburner.im.android.core.User;
-import com.sageburner.im.android.core.UserAgentProvider;
 import com.github.kevinsawicki.http.HttpRequest;
 
 import java.io.BufferedReader;
@@ -55,7 +50,8 @@ public class BootstrapServiceTest {
      */
     @Before
     public void before() throws IOException {
-        service = new BootstrapService("foo", new UserAgentProvider()) {
+        //service = new BootstrapService("foo", new UserAgentProvider()) {
+        service = new BootstrapService() {
             protected HttpRequest execute(HttpRequest request) throws IOException {
                 return BootstrapServiceTest.this.request;
             }
