@@ -1,3 +1,5 @@
+package com.sageburner.im.android.jpbc;
+
 /**
  * Used to collect public keys from keyservers and encrypt a message
  * 

@@ -34,6 +34,9 @@ dependencies {
     //asmack
     compile fileTree(dir: '../../lib/asmack', include: ['*.jar'])
 
+    //JPBC
+    compile fileTree(dir: '../../lib/jpbc', include: ['*.jar'])
+
     //Bouncy Castle
     //compile 'org.bouncycastle:bcprov-jdk16:1.46'
     compile 'org.bouncycastle:bcprov-jdk15on:1.51'

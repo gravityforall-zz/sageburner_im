@@ -1,3 +1,5 @@
+package com.sageburner.im.android.jpbc;
+
 public class Pair<A, B> {
     private A first;
     private B second;

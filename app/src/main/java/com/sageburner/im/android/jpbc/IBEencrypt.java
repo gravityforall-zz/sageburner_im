@@ -1,3 +1,5 @@
+package com.sageburner.im.android.jpbc;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
