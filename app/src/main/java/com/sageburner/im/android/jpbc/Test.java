@@ -1,7 +1,7 @@
 package com.sageburner.im.android.jpbc;
 
-import it.unisa.dia.gas.jpbc.CurveGenerator;
-import it.unisa.dia.gas.jpbc.CurveParameters;
+import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Field;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -18,10 +18,10 @@ public class Test {
 		// Init the generator...
 		int rBits = 160;
 		int qBits = 512;
-		CurveGenerator curveGenerator = new TypeACurveGenerator(rBits, qBits);
+		PairingParametersGenerator pairingParametersGenerator = new TypeACurveGenerator(rBits, qBits);
 
 		// Generate the parameters...
-		CurveParameters params = curveGenerator.generate();
+		PairingParameters params = pairingParametersGenerator.generate();
 		System.out.println(params);
 
 		Pairing pairing = PairingFactory.getPairing(params);

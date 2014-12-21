@@ -1,11 +1,12 @@
 package com.sageburner.im.android.jpbc;
 
-import it.unisa.dia.gas.jpbc.CurveGenerator;
-import it.unisa.dia.gas.jpbc.CurveParameters;
+import it.unisa.dia.gas.jpbc.PairingParameters;
+import it.unisa.dia.gas.jpbc.PairingParametersGenerator;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import it.unisa.dia.gas.plaf.jpbc.pairing.a.TypeACurveGenerator;
+import org.bouncycastle.util.encoders.Base64;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,8 +14,6 @@ import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
-
-import javax.xml.bind.DatatypeConverter;
 
 public class IBE {
 	Pairing pairing;
@@ -32,10 +31,10 @@ public class IBE {
 		// Init the generator...
 		int rBits = 160;
 		int qBits = 512;
-		CurveGenerator curveGenerator = new TypeACurveGenerator(rBits, qBits);
+		PairingParametersGenerator pairingParametersGenerator = new TypeACurveGenerator(rBits, qBits);
 
 		// Generate the parameters...
-		CurveParameters params = curveGenerator.generate();
+		PairingParameters params = pairingParametersGenerator.generate();
 
 		// Saving curve parameters is not really necessary since P, s, Ppub are
 		// not determistically picked from curve params, so have to save P and s
@@ -43,7 +42,7 @@ public class IBE {
 		File f = new File("curve.properties.txt");
 		if (f.exists()) {
 			// load the parameters
-			params = PairingFactory.getInstance().loadCurveParameters(
+			params = PairingFactory.getInstance().loadParameters(
 					"curve.properties.txt");
 		} else {
 			// generate new parameters
@@ -319,11 +318,14 @@ public class IBE {
 	// convert between byte array and hex string. Used to save public and
 	// private keys, and encrypted message
 	public String toHexString(byte[] array) {
-		return DatatypeConverter.printHexBinary(array);
+		//return DatatypeConverter.printHexBinary(array);
+		byte[] hexBytes = Base64.encode(array);
+		return new String(hexBytes);
 	}
 
 	public byte[] toByteArray(String s) {
-		return DatatypeConverter.parseHexBinary(s);
+		//return DatatypeConverter.parseHexBinary(s);
+		return Base64.encode(s.getBytes());
 	}
 
 	// do the hashing
