@@ -325,7 +325,7 @@ public class IBE {
 
 	public byte[] toByteArray(String s) {
 		//return DatatypeConverter.parseHexBinary(s);
-		return Base64.encode(s.getBytes());
+		return Base64.decode(s.getBytes());
 	}
 
 	// do the hashing
