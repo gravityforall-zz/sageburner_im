@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -171,6 +172,7 @@ public class MainActivity extends BootstrapFragmentActivity {
                 //get localUser from application context
                 User user = ((BootstrapApplication) BootstrapApplication.getInstance()).getLocalUser();
                 //Connect to XMPP server
+                Log.d("MainActivity::checkAuth::onSuccess: ", "Connecting as " + user.getUsername());
                 connect(user);
             }
         }.execute();

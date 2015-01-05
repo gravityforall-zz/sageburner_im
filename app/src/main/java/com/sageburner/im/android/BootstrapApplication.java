@@ -6,6 +6,7 @@ import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
 import com.sageburner.im.android.core.User;
+import com.sageburner.im.android.jpbc.IBE;
 
 /**
  * sageburner_im application
@@ -16,13 +17,8 @@ public class BootstrapApplication extends Application {
 
     private static User localUser;
 
-    public static User getLocalUser() {
-        return localUser;
-    }
-
-    public static void setLocalUser(User localUser) {
-        BootstrapApplication.localUser = localUser;
-    }
+    //IBE Encryption Stuff
+    private static IBE ibe;
 
     /**
      * Create main application
@@ -45,6 +41,8 @@ public class BootstrapApplication extends Application {
         super.onCreate();
 
         instance = this;
+        //IBE Encryption Stuff
+//        ibe = new IBE();
 
         // Perform injection
         Injector.init(getRootModule(), this);
@@ -54,7 +52,6 @@ public class BootstrapApplication extends Application {
     private Object getRootModule() {
         return new RootModule();
     }
-
 
     /**
      * Create main application
@@ -68,5 +65,18 @@ public class BootstrapApplication extends Application {
 
     public static BootstrapApplication getInstance() {
         return instance;
+    }
+
+    public static void setLocalUser(User localUser) {
+        BootstrapApplication.localUser = localUser;
+    }
+
+    public static User getLocalUser() {
+        return localUser;
+    }
+
+    //IBE Encryption Stuff
+    public static IBE getIBE() {
+        return ibe;
     }
 }

@@ -96,14 +96,15 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
                 String messageText = msgInput.getText().toString();
 
                 if (!TextUtils.isEmpty(messageText)) {
-                    Log.i("ConversationFragment ", "Sending text " + messageText + " to " + recipient.getUsername());
+                    String username = recipient.getUsername();
+                    Log.i("ConversationFragment ", "Sending text " + messageText + " to " + username);
 
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
                     convMsgItem.setToUser(recipient);
 
                     CryptoMessage cryptoMessage = null;
                     try {
-                        cryptoMessage = CryptoUtils.createCryptoMessage(messageText);
+                        cryptoMessage = CryptoUtils.createCryptoMessage(messageText, username);
                         Log.d("ConversationFragment::onViewCreated: ", " cryptoMessage.toString(): " + cryptoMessage.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -139,17 +140,18 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
                     CryptoMessage cryptoMessage = null;
                     String messageBody = null;
-                    String cryptoMessageText = null;
-                    byte[] cryptoMessageKeyBytes = null;
-                    Key cryptoMessageKey = null;
+//                    String cryptoMessageText = null;
+//                    byte[] cryptoMessageKeyBytes = null;
+//                    Key cryptoMessageKey = null;
                     try {
                         messageBody = message.getBody();
-                        cryptoMessageText = CryptoUtils.parseMessage(messageBody);
-                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessageText: " + cryptoMessageText);
-                        cryptoMessageKeyBytes = CryptoUtils.parseKey(messageBody);
-                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessageKeyBytes: " + new String(cryptoMessageKeyBytes));
-                        cryptoMessageKey = new SecretKeySpec(cryptoMessageKeyBytes, Constants.Crypto.CRYPTO_ALGORITHM);
-                        cryptoMessage = CryptoUtils.createCryptoMessage(cryptoMessageText, cryptoMessageKey);
+//                        cryptoMessageText = CryptoUtils.parseMessage(messageBody);
+//                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessageText: " + cryptoMessageText);
+//                        cryptoMessageKeyBytes = CryptoUtils.parseKey(messageBody);
+//                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessageKeyBytes: " + new String(cryptoMessageKeyBytes));
+//                        cryptoMessageKey = new SecretKeySpec(cryptoMessageKeyBytes, Constants.Crypto.CRYPTO_ALGORITHM);
+//                        String cryptoMessageKeyString = CryptoUtils.createKeyString(cryptoMessageKey);
+                        cryptoMessage = CryptoUtils.createCryptoMessage(messageBody);
                         Log.d("ConversationFragment::onViewCreated: ", " cryptoMessage: " + cryptoMessage.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -222,7 +224,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         msgItem.setFromUser(system);
         msgItem.setToUser(user1);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM d h:mm");
-        CryptoMessage cryptoMessage = CryptoUtils.createCryptoMessage(sdf.format(new Date()));
+        CryptoMessage cryptoMessage = CryptoUtils.createCryptoMessage(sdf.format(new Date()), user1.getUsername());
         msgItem.setMessage(cryptoMessage);
         msgList.add(msgItem);
 

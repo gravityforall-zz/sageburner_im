@@ -12,18 +12,18 @@ import java.security.Key;
 public class CryptoMessage {
 
     private String message;
-    private Key key;
+    private String key;
 
-    public CryptoMessage(String message, Key key) {
-        this.message = message;
-        this.key = key;
+    public CryptoMessage(String inMessage, String inKey) {
+        this.message = inMessage;
+        this.key = inKey;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public Key getKey() {
+    public String getKey() {
         return key;
     }
 
@@ -33,8 +33,7 @@ public class CryptoMessage {
 
         sb.append(message);
         sb.append(Constants.Crypto.CRYPTO_MESSAGE_SEPARATOR);
-        byte[] encodedKey = Base64.encode(key.getEncoded());
-        sb.append(new String(encodedKey));
+        sb.append(key);
 
         return sb.toString();
     }
