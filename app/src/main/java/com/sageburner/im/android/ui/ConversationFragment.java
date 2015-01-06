@@ -140,17 +140,8 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
                     CryptoMessage cryptoMessage = null;
                     String messageBody = null;
-//                    String cryptoMessageText = null;
-//                    byte[] cryptoMessageKeyBytes = null;
-//                    Key cryptoMessageKey = null;
                     try {
                         messageBody = message.getBody();
-//                        cryptoMessageText = CryptoUtils.parseMessage(messageBody);
-//                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessageText: " + cryptoMessageText);
-//                        cryptoMessageKeyBytes = CryptoUtils.parseKey(messageBody);
-//                        Log.d("ConversationFragment::onViewCreated: ", " cryptoMessageKeyBytes: " + new String(cryptoMessageKeyBytes));
-//                        cryptoMessageKey = new SecretKeySpec(cryptoMessageKeyBytes, Constants.Crypto.CRYPTO_ALGORITHM);
-//                        String cryptoMessageKeyString = CryptoUtils.createKeyString(cryptoMessageKey);
                         cryptoMessage = CryptoUtils.createCryptoMessage(messageBody);
                         Log.d("ConversationFragment::onViewCreated: ", " cryptoMessage: " + cryptoMessage.toString());
                     } catch (Exception e) {

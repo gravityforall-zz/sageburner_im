@@ -53,17 +53,25 @@ public class CryptoUtils {
         String keyString = createKeyString(key);
         String encryptedMessage = encrypt(keyString, inMessage);
 
-//        IBE ibe = ((BootstrapApplication) BootstrapApplication.getInstance()).getIBE();
-//        String keyString = createKeyString(key);
-//        String encryptedKey = ibe.getEncFromID(keyString, inUsername);
+        IBE ibe = BootstrapApplication.getInstance().getIBE();
+        String encryptedKey = ibe.getEncFromID(keyString, inUsername);
+        String encryptedKeyString = new String(Base64.encode(encryptedKey.getBytes()));
 
-        return new CryptoMessage(encryptedMessage, keyString);
+        return new CryptoMessage(encryptedMessage, encryptedKeyString);
     }
 
     public static CryptoMessage createCryptoMessage(String inMessage) throws Exception {
         String encryptedMessage = parseMessage(inMessage);
         String encryptedKey = parseKeyString(inMessage);
-        return new CryptoMessage(encryptedMessage, encryptedKey);
+
+        BootstrapApplication bootstrapApplication = BootstrapApplication.getInstance();
+
+        IBE ibe = bootstrapApplication.getIBE();
+        User user = bootstrapApplication.getLocalUser();
+        String decryptedKey = ibe.getDecFromID(encryptedKey, user.getUsername());
+        String decryptedKeyString = new String(Base64.encode(decryptedKey.getBytes()));
+
+        return new CryptoMessage(encryptedMessage, decryptedKeyString);
     }
 
     public static String parseMessage(String cryptoMessage) {

@@ -248,8 +248,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
 
 //                User user = bootstrapService.authenticate(email, password);
                 User user = bootstrapService.authenticate("user1@sageburner.com", "password");
-                ((BootstrapApplication) BootstrapApplication.getInstance()).setLocalUser(user);
-                Log.d("BootstrapAuthenticatorActivity::handleLogin: ", " localUser username: " + ((BootstrapApplication) BootstrapApplication.getInstance()).getLocalUser().getUsername());
+                BootstrapApplication.getInstance().setLocalUser(user);
+                Log.d("BootstrapAuthenticatorActivity::handleLogin: ", " localUser username: " + BootstrapApplication.getInstance().getLocalUser().getUsername());
                 return true;
             }
 
@@ -410,7 +410,7 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                         PARAM_USERNAME, email, PARAM_PASSWORD, password);
 
                 User user = bootstrapService.authenticate(email, password);
-                Log.d("BootstrapAuthenticatorActivity::handleRegister: ", " localUser username: " + ((BootstrapApplication) BootstrapApplication.getInstance()).getLocalUser().getUsername());
+                Log.d("BootstrapAuthenticatorActivity::handleRegister: ", " localUser username: " + BootstrapApplication.getInstance().getLocalUser().getUsername());
                 ((BootstrapApplication) getApplication()).setLocalUser(user);
 
                 return true;

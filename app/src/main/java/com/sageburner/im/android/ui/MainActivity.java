@@ -170,7 +170,7 @@ public class MainActivity extends BootstrapFragmentActivity {
                 userHasAuthenticated = true;
 
                 //get localUser from application context
-                User user = ((BootstrapApplication) BootstrapApplication.getInstance()).getLocalUser();
+                User user = BootstrapApplication.getInstance().getLocalUser();
                 //Connect to XMPP server
                 Log.d("MainActivity::checkAuth::onSuccess: ", "Connecting as " + user.getUsername());
                 connect(user);
