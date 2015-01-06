@@ -39,22 +39,22 @@ public class IBE {
 		// Saving curve parameters is not really necessary since P, s, Ppub are
 		// not determistically picked from curve params, so have to save P and s
 		// separately
-		File f = new File("curve.properties.txt");
-		if (f.exists()) {
-			// load the parameters
-			params = PairingFactory.getInstance().loadParameters(
-					"curve.properties.txt");
-		} else {
-			// generate new parameters
-			try {
-				PrintWriter out = new PrintWriter(f);
-				out.print(params);
-				out.close();
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		File f = new File("curve.properties.txt");
+//		if (f.exists()) {
+//			// load the parameters
+//			params = PairingFactory.getInstance().loadParameters(
+//					"curve.properties.txt");
+//		} else {
+//			// generate new parameters
+//			try {
+//				PrintWriter out = new PrintWriter(f);
+//				out.print(params);
+//				out.close();
+//			} catch (FileNotFoundException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 
 		pairing = PairingFactory.getPairing(params);
 
@@ -71,43 +71,43 @@ public class IBE {
 		s = pairing.getZr().newRandomElement();
 
 		// Save IBE parameters to file
-		File pbyte = new File("Pbyte.txt");
-		File sbyte = new File("sbyte.txt");
-		try {
-			// if the parameters have already been set, read them from the file
-			if (pbyte.exists() && sbyte.exists()) {
-
-				// read files
-				Scanner in = new Scanner(pbyte);
-				String pinstr = in.nextLine();
-				byte[] PbyteIn = this.toByteArray(pinstr);
-				// System.out.println(Pstr);
-				P.setFromBytes(PbyteIn);
-				in.close();
-				in = new Scanner(sbyte);
-				String sinstr = in.nextLine();
-				byte[] SbyteIn = this.toByteArray(sinstr);
-				s.setFromBytes(SbyteIn);
-				in.close();
-
-			} else {
-				// save them to file
-				byte[] Pbyte = P.toBytes();
-				byte[] Sbyte = s.toBytes();
-				String Pstr = this.toHexString(Pbyte);
-				String Sstr = this.toHexString(Sbyte);
-
-				// save to files
-				PrintWriter out = new PrintWriter(pbyte);
-				out.println(Pstr);
-				out.close();
-				out = new PrintWriter(sbyte);
-				out.println(Sstr);
-				out.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		File pbyte = new File("Pbyte.txt");
+//		File sbyte = new File("sbyte.txt");
+//		try {
+//			// if the parameters have already been set, read them from the file
+//			if (pbyte.exists() && sbyte.exists()) {
+//
+//				// read files
+//				Scanner in = new Scanner(pbyte);
+//				String pinstr = in.nextLine();
+//				byte[] PbyteIn = this.toByteArray(pinstr);
+//				// System.out.println(Pstr);
+//				P.setFromBytes(PbyteIn);
+//				in.close();
+//				in = new Scanner(sbyte);
+//				String sinstr = in.nextLine();
+//				byte[] SbyteIn = this.toByteArray(sinstr);
+//				s.setFromBytes(SbyteIn);
+//				in.close();
+//
+//			} else {
+//				// save them to file
+//				byte[] Pbyte = P.toBytes();
+//				byte[] Sbyte = s.toBytes();
+//				String Pstr = this.toHexString(Pbyte);
+//				String Sstr = this.toHexString(Sbyte);
+//
+//				// save to files
+//				PrintWriter out = new PrintWriter(pbyte);
+//				out.println(Pstr);
+//				out.close();
+//				out = new PrintWriter(sbyte);
+//				out.println(Sstr);
+//				out.close();
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 
 		// MUST duplicate element before multiplying it
 		// Ppub depends solely on P and s so do not need to save Ppub

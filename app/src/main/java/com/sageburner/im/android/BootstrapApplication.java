@@ -5,6 +5,7 @@ package com.sageburner.im.android;
 import android.app.Application;
 import android.app.Instrumentation;
 import android.content.Context;
+import android.util.Log;
 import com.sageburner.im.android.core.User;
 import com.sageburner.im.android.jpbc.IBE;
 
@@ -42,7 +43,8 @@ public class BootstrapApplication extends Application {
 
         instance = this;
         //IBE Encryption Stuff
-//        ibe = new IBE();
+        Log.d("BootstrapApplication::onCreate: ", "Initializing IBE...");
+        ibe = new IBE();
 
         // Perform injection
         Injector.init(getRootModule(), this);

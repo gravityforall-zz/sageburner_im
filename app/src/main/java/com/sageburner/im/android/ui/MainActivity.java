@@ -226,9 +226,25 @@ public class MainActivity extends BootstrapFragmentActivity {
         super.onDestroy();
         try {
             disconnect();
+            logout();
         } catch (Exception e) {
 
         }
+    }
+
+    protected LogoutService getLogoutService() {
+        return logoutService;
+    }
+
+    private void logout() {
+        getLogoutService().logout(new Runnable() {
+            @Override
+            public void run() {
+                // Calling a refresh will force the service to look for a logged in user
+                // and when it finds none the user will be requested to log in again.
+                //forceRefresh();
+            }
+        });
     }
 
     //XMPP Stuff
