@@ -7,14 +7,11 @@ import com.sageburner.im.android.core.User;
 import com.sageburner.im.android.jpbc.IBE;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
-import org.bouncycastle.util.encoders.Hex;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.util.Arrays;
 
 /**
  * Created by Ryan on 11/30/2014.
@@ -35,6 +32,7 @@ public class CryptoUtils {
 
     private static String decrypt(String inKeyString, String ciphertext) throws Exception {
         Cipher cipher = Cipher.getInstance(CRYPTO_ALGORITHM_MODE, new BouncyCastleProvider());
+        Log.d("CryptoUtils::decrypt: ", " inKeyString: " + inKeyString);
         Key key = new SecretKeySpec(Base64.decode(inKeyString.getBytes()), Constants.Crypto.CRYPTO_ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, key);
         byte[] decodedBytes = Base64.decode(ciphertext.getBytes());
@@ -53,9 +51,13 @@ public class CryptoUtils {
         String keyString = createKeyString(key);
         String encryptedMessage = encrypt(keyString, inMessage);
 
-        IBE ibe = BootstrapApplication.getInstance().getIBE();
+        BootstrapApplication bootstrapApplication = BootstrapApplication.getInstance();
+
+        IBE ibe = bootstrapApplication.getIBE();
         String encryptedKey = ibe.getEncFromID(keyString, inUsername);
+        Log.d("CryptoUtils::createCryptoMessage(String, String): ", " encryptedKey: " + encryptedKey);
         String encryptedKeyString = new String(Base64.encode(encryptedKey.getBytes()));
+        Log.d("CryptoUtils::createCryptoMessage(String, String): ", " encryptedKeyString: " + encryptedKeyString);
 
         return new CryptoMessage(encryptedMessage, encryptedKeyString);
     }
@@ -63,50 +65,45 @@ public class CryptoUtils {
     public static CryptoMessage createCryptoMessage(String inMessage) throws Exception {
         String encryptedMessage = parseMessage(inMessage);
         String encryptedKey = parseKeyString(inMessage);
+        Log.d("CryptoUtils::createCryptoMessage(String): ", " encryptedKey: " + encryptedKey);
 
-        BootstrapApplication bootstrapApplication = BootstrapApplication.getInstance();
-
-        IBE ibe = bootstrapApplication.getIBE();
-        User user = bootstrapApplication.getLocalUser();
-        String decryptedKey = ibe.getDecFromID(encryptedKey, user.getUsername());
-        String decryptedKeyString = new String(Base64.encode(decryptedKey.getBytes()));
-
-        return new CryptoMessage(encryptedMessage, decryptedKeyString);
+        return new CryptoMessage(encryptedMessage, encryptedKey);
     }
 
-    public static String parseMessage(String cryptoMessage) {
+    private static String parseMessage(String cryptoMessage) {
         int separatorPos = cryptoMessage.lastIndexOf(";");
         String messageString = cryptoMessage.substring(0, separatorPos);
         return messageString;
     }
 
-    public static byte[] parseKey(String cryptoMessage) {
+    private static String parseKeyString(String cryptoMessage) {
         int separatorPos = cryptoMessage.lastIndexOf(";");
         String keyString = cryptoMessage.substring(separatorPos + 1);
-        //Log.d("CryptoUtils::parseKey: ", " keyString: " + keyString);
-        return Base64.decode(keyString.getBytes());
-    }
-
-    public static String parseKeyString(String cryptoMessage) {
-        int separatorPos = cryptoMessage.lastIndexOf(";");
-        String keyString = cryptoMessage.substring(separatorPos + 1);
-        //Log.d("CryptoUtils::parseKey: ", " keyString: " + keyString);
+        Log.d("CryptoUtils::parseKey: ", " keyString: " + keyString);
         return keyString;
     }
 
-    public static String readCryptoMessage(String cryptoMessageString) throws Exception {
+    public static String readCryptoMessage(String cryptoMessageString, String username) throws Exception {
         String message = parseMessage(cryptoMessageString);
-        String keyString = parseKeyString(cryptoMessageString);
-        return decrypt(keyString, message);
+        String encryptedKey = parseKeyString(cryptoMessageString);
+        String encryptedKeyString = new String(Base64.decode(encryptedKey.getBytes()));
+        Log.d("CryptoUtils::readCryptoMessage: ", " encryptedKeyString: " + encryptedKeyString);
+
+        BootstrapApplication bootstrapApplication = BootstrapApplication.getInstance();
+
+        IBE ibe = bootstrapApplication.getIBE();
+        String decryptedKey = ibe.getDecFromID(encryptedKeyString, username);
+
+        return decrypt(decryptedKey, message);
     }
 
-    public static String createKeyString(Key inKey) {
+    private static String createKeyString(Key inKey) {
         byte[] encodedKey = Base64.encode(inKey.getEncoded());
         return new String(encodedKey);
     }
 
     public static void main(String[] args) throws Exception {
-
+/*
         System.out.println("=================================================");
         System.out.println("Testing basic encryption/decryption functionality");
         User testUser = new User();
@@ -149,6 +146,6 @@ public class CryptoUtils {
         System.out.println("Encrypted Text : " + cryptoMessage.getMessage());
         System.out.println("Decrypted Text : " + readCryptoMessage(cryptoMessageString));
         System.out.println("=================================================");
-
+*/
     }
 }

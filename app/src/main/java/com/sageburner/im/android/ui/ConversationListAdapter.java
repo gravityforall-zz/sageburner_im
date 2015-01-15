@@ -73,12 +73,15 @@ public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessa
 
         ConversationMessageItem msgItem = getItem(position);
         boolean isIncoming = msgItem.isIncoming();
+        String username;
 
         int layoutId;
         if (isIncoming) {
             layoutId = R.layout.conversation_list_item_in;
+            username = msgItem.getFromUser().getUsername();
         } else {
             layoutId = R.layout.conversation_list_item_out;
+            username = msgItem.getToUser().getUsername();
         }
 
         Log.i("ConversationListAdapter::getView: ", "layoutId: " + layoutId);
@@ -92,7 +95,8 @@ public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessa
 
         String msgText = null;
         try {
-            msgText = CryptoUtils.readCryptoMessage(msgItem.getMessage().toString());
+            String message = msgItem.getMessage().toString();
+            msgText = CryptoUtils.readCryptoMessage(message, username);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -138,6 +138,10 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
                     ConversationMessageItem convMsgItem = new ConversationMessageItem();
 
+                    User user = new User();
+                    user.setUsername(fromName);
+                    convMsgItem.setFromUser(user);
+
                     CryptoMessage cryptoMessage = null;
                     String messageBody = null;
                     try {
