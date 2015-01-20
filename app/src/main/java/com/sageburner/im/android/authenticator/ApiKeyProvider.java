@@ -10,8 +10,6 @@ import android.os.Bundle;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-
 import static android.accounts.AccountManager.KEY_AUTHTOKEN;
 import static com.sageburner.im.android.core.Constants.Auth.AUTHTOKEN_TYPE;
 import static com.sageburner.im.android.core.Constants.Auth.BOOTSTRAP_ACCOUNT_TYPE;
@@ -39,7 +37,7 @@ public class ApiKeyProvider {
      *
      *
      * @return API key to be used for authorization with a
-     * {@link com.sageburner.im.android.core.BootstrapService} instance
+     * {@link com.sageburner.im.android.service.BootstrapService} instance
      * @throws AccountsException
      * @throws IOException
      */

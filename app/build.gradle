@@ -33,10 +33,12 @@ dependencies {
     //asmack
     compile fileTree(include: ['*.jar'], dir: '../../lib/asmack')
     //JPBC
-    compile fileTree(include: ['*.jar'], dir: '../../lib/jpbc')
+    //compile fileTree(include: ['*.jar'], dir: '../../lib/jpbc')
     //Bouncy Castle
     //compile 'org.bouncycastle:bcprov-jdk16:1.46'
     compile 'org.bouncycastle:bcprov-jdk15on:1.51'
+    //apache commons io (for fileutils)
+    compile 'org.apache.commons:commons-io:1.3.2'
     androidTestCompile 'junit:junit:4.11'
     androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
     androidTestCompile 'org.mockito:mockito-core:1.9.5'

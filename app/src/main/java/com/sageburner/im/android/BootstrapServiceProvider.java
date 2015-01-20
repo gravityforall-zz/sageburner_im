@@ -5,17 +5,14 @@ import android.accounts.AccountsException;
 import android.app.Activity;
 
 import com.sageburner.im.android.authenticator.ApiKeyProvider;
-import com.sageburner.im.android.core.BootstrapService;
-import com.sageburner.im.android.core.UserAgentProvider;
+import com.sageburner.im.android.service.BootstrapService;
 
 import java.io.IOException;
-
-import javax.inject.Inject;
 
 import retrofit.RestAdapter;
 
 /**
- * Provider for a {@link com.sageburner.im.android.core.BootstrapService} instance
+ * Provider for a {@link com.sageburner.im.android.service.BootstrapService} instance
  */
 public class BootstrapServiceProvider {
 

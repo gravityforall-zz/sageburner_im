@@ -5,7 +5,7 @@ import android.accounts.AccountManager;
 import com.sageburner.im.android.authenticator.ApiKeyProvider;
 import com.sageburner.im.android.authenticator.BootstrapAuthenticatorActivity;
 import com.sageburner.im.android.service.XMPPService;
-import com.sageburner.im.android.core.BootstrapService;
+import com.sageburner.im.android.service.BootstrapService;
 import com.sageburner.im.android.core.Constants;
 import com.sageburner.im.android.core.PostFromAnyThreadBus;
 import com.sageburner.im.android.core.RestAdapterRequestInterceptor;

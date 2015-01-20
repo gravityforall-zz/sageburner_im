@@ -3,8 +3,7 @@ package com.sageburner.im.android.util;
 import android.util.Log;
 import com.sageburner.im.android.BootstrapApplication;
 import com.sageburner.im.android.core.Constants;
-import com.sageburner.im.android.core.User;
-import com.sageburner.im.android.jpbc.IBE;
+import com.sageburner.im.android.ibe.IBE;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 

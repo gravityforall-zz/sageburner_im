@@ -48,26 +48,14 @@ public final class Constants {
 
 
         /**
-         * Authentication URL
+         * Authentication Service
          */
         public static final String URL_AUTH_FRAG = "/login";
 
         /**
-         * List Users URL
+         * IBEParams Service
          */
-        public static final String URL_USERS_FRAG =  "/1/users";
-
-
-        /**
-         * List News URL
-         */
-        public static final String URL_NEWS_FRAG = "/1/classes/News";
-
-
-        /**
-         * List Checkin's URL
-         */
-        public static final String URL_CHECKINS_FRAG = "/1/classes/Locations";
+        public static final String URL_IBEPARAMS_FRAG =  "/getIBEParams";
 
         /**
          * PARAMS for auth
@@ -77,6 +65,7 @@ public final class Constants {
         public static final String PARAM_USERNAME = "username";
         public static final String PARAM_PASSWORD = "password";
 
+        public static final String PARAM_KEY = "key";
 
         public static final String PARSE_APP_ID = "zHb2bVia6kgilYRWWdmTiEJooYA17NnkBSUVsr4H";
         public static final String PARSE_REST_API_KEY = "N2kCY1T3t3Jfhf9zpJ5MCURn3b25UpACILhnf5u9";

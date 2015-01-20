@@ -7,7 +7,7 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.util.Log;
 import com.sageburner.im.android.core.User;
-import com.sageburner.im.android.jpbc.IBE;
+import com.sageburner.im.android.ibe.IBE;
 
 /**
  * sageburner_im application
@@ -42,9 +42,6 @@ public class BootstrapApplication extends Application {
         super.onCreate();
 
         instance = this;
-        //IBE Encryption Stuff
-        Log.d("BootstrapApplication::onCreate: ", "Initializing IBE...");
-        ibe = new IBE();
 
         // Perform injection
         Injector.init(getRootModule(), this);
@@ -80,5 +77,15 @@ public class BootstrapApplication extends Application {
     //IBE Encryption Stuff
     public static IBE getIBE() {
         return ibe;
+    }
+
+//    public static void setIBE(IBE ibe) {
+//        BootstrapApplication.ibe = ibe;
+//    }
+
+    public static void createAndInitIBE(String paramsString, String pByteString, String sByteString ) {
+        //IBE Encryption Stuff
+        Log.d("BootstrapApplication::onCreate: ", "Initializing IBE...");
+        ibe = new IBE(paramsString, pByteString, sByteString);
     }
 }

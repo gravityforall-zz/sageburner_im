@@ -19,8 +19,10 @@ import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
 import com.sageburner.im.android.core.User;
+import com.sageburner.im.android.ibe.IBEParams;
+import com.sageburner.im.android.ibe.IBEParamsWrapper;
 import com.sageburner.im.android.service.XMPPService;
-import com.sageburner.im.android.core.BootstrapService;
+import com.sageburner.im.android.service.BootstrapService;
 import com.sageburner.im.android.events.NavItemSelectedEvent;
 import com.sageburner.im.android.util.Ln;
 import com.sageburner.im.android.util.SafeAsyncTask;
@@ -39,6 +41,7 @@ import javax.inject.Inject;
 public class MainActivity extends BootstrapFragmentActivity {
 
     @Inject protected BootstrapServiceProvider serviceProvider;
+    @Inject protected BootstrapService bootstrapService;
     @Inject protected LogoutService logoutService;
     @Inject protected XMPPService xmppService;
 
@@ -171,6 +174,26 @@ public class MainActivity extends BootstrapFragmentActivity {
 
                 //get localUser from application context
                 User user = BootstrapApplication.getInstance().getLocalUser();
+                //get IBEParams
+                IBEParamsWrapper ibeParamsWrapper = bootstrapService.getIBEParamsWrapper(1297859662);
+                IBEParams ibeParams = ibeParamsWrapper.getIBEParams();
+                //
+//                String paramsString = "type a\n" +
+//                        "q 15395144596410194588212526809239258288053698882689112700879123127308216454058624125169848218156001486832831439076222867742441002432159967257568952165990471\n" +
+//                        "r 1461501637330902918201208952637712259106134294527\n" +
+//                        "h 10533785391117241877291560136702432360038107142333604139416314716198370432552752255793622979018968457412536\n" +
+//                        "exp1 91\n" +
+//                        "exp2 160\n" +
+//                        "sign0 -1\n" +
+//                        "sign1 -1";
+//                String pByteString = "ARkDcGf8U6FrIdEYh6jIXcq4GqIImORbifkdNY0eRpY" +
+//                        "FZGa8IItN9XrQlanyPndcf2iQofbKZ2ZaPXEmIv+jp" +
+//                        "c8A7v8MKpoZkKRg8aF8gcjO29NDm8XJ4v4tcm0em/9" +
+//                        "f1F/wHxXdpCm5ZlqC1QDE9kxbtD1Owgj5VHbqv0h922GecA==";
+//                String sByteString = "g9pi2mwJjfOYuHunFObMgFwFVbk=";
+
+                //
+                BootstrapApplication.createAndInitIBE(ibeParams.getParamsString(), ibeParams.getpByteString(), ibeParams.getsByteString());
                 //Connect to XMPP server
                 Log.d("MainActivity::checkAuth::onSuccess: ", "Connecting as " + user.getUsername());
                 connect(user);
