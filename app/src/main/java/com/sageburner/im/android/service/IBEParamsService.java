@@ -1,8 +1,6 @@
 package com.sageburner.im.android.service;
 
 import com.sageburner.im.android.core.Constants;
-import com.sageburner.im.android.core.User;
-import com.sageburner.im.android.core.UsersWrapper;
 import com.sageburner.im.android.ibe.IBEParamsWrapper;
 import retrofit.http.GET;
 import retrofit.http.Query;

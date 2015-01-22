@@ -47,6 +47,24 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     @Inject protected XMPPService xmppService;
     @Inject protected IBEService ibeService;
 
+    //IBE Stuff
+    //TODO REMOVE THIS!
+    String tmpParamsString = "type a\n"+
+            "q 15395144596410194588212526809239258288053698882689112700879123127308216454058624125169848218156001486832831439076222867742441002432159967257568952165990471\n" +
+            "r 1461501637330902918201208952637712259106134294527\n" +
+            "h 10533785391117241877291560136702432360038107142333604139416314716198370432552752255793622979018968457412536\n" +
+            "exp1 91\n" +
+            "exp2 160\n" +
+            "sign0 -1\n" +
+            "sign1 -1";
+
+    String tmpPByteString = "ARkDcGf8U6FrIdEYh6jIXcq4GqIImORbifkdNY0eRpY" +
+            "FZGa8IItN9XrQlanyPndcf2iQofbKZ2ZaPXEmIv+jp" +
+            "c8A7v8MKpoZkKRg8aF8gcjO29NDm8XJ4v4tcm0em/9" +
+            "f1F/wHxXdpCm5ZlqC1QDE9kxbtD1Owgj5VHbqv0h922GecA==";
+
+    String tmpSByteString = "g9pi2mwJjfOYuHunFObMgFwFVbk=";
+
     private ConversationListAdapter conversationListAdapter;
 
     @Override
@@ -187,6 +205,9 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     @Override
     public void onLoadFinished(final Loader<List<ConversationMessageItem>> loader, final List<ConversationMessageItem> items) {
         super.onLoadFinished(loader, items);
+
+        //TODO THIS IS FOR ALL THE MARBLES!!!
+        getIBEParamsWrapper();
     }
 
     @Override
@@ -210,6 +231,10 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     }
 
     private List<ConversationMessageItem> createNewConversationMessage() throws Exception {
+        //TODO REMOVE THIS!!!
+        IBE tmpIBE = new IBE(tmpParamsString, tmpPByteString, tmpSByteString);
+        CryptoUtils.setIbe(tmpIBE);
+
         List<ConversationMessageItem> msgList = new ArrayList<ConversationMessageItem>();
 
         User system = new User();
@@ -226,6 +251,9 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         CryptoMessage cryptoMessage = CryptoUtils.createCryptoMessage(sdf.format(new Date()), user1.getUsername());
         msgItem.setMessage(cryptoMessage);
         msgList.add(msgItem);
+
+        //TODO REMOVE THIS!!!
+        CryptoUtils.setIbe(null);
 
         return msgList;
     }

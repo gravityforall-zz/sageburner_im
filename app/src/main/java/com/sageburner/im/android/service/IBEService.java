@@ -50,7 +50,7 @@ public class IBEService {
         @Override
         public Boolean call() throws Exception {
             //get IBEParams
-            ibeParamsWrapper = bootstrapService.getIBEParamsWrapper(1297859662);
+            ibeParamsWrapper = bootstrapService.getIBEParamsWrapper(266068321);
             return true;
         }
 
@@ -59,7 +59,7 @@ public class IBEService {
             //TODO: implement onSuccess method
             super.onSuccess(messageSendSuccess);
 
-            IBEParams ibeParams = ibeParamsWrapper.getIBEParams();
+            IBEParams ibeParams = ibeParamsWrapper.getIbeParams();
             createAndInitIBE(ibeParams.getParamsString(), ibeParams.getpByteString(), ibeParams.getsByteString());
 
             Ln.d("Message send successful: %s", messageSendSuccess);
