@@ -18,9 +18,6 @@ public class BootstrapApplication extends Application {
 
     private static User localUser;
 
-    //IBE Encryption Stuff
-    private static IBE ibe;
-
     /**
      * Create main application
      */
@@ -72,20 +69,5 @@ public class BootstrapApplication extends Application {
 
     public static User getLocalUser() {
         return localUser;
-    }
-
-    //IBE Encryption Stuff
-    public static IBE getIBE() {
-        return ibe;
-    }
-
-//    public static void setIBE(IBE ibe) {
-//        BootstrapApplication.ibe = ibe;
-//    }
-
-    public static void createAndInitIBE(String paramsString, String pByteString, String sByteString ) {
-        //IBE Encryption Stuff
-        Log.d("BootstrapApplication::onCreate: ", "Initializing IBE...");
-        ibe = new IBE(paramsString, pByteString, sByteString);
     }
 }

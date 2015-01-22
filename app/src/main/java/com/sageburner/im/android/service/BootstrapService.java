@@ -1,11 +1,8 @@
 
 package com.sageburner.im.android.service;
 
-import java.util.List;
-
 import com.sageburner.im.android.core.User;
 import com.sageburner.im.android.ibe.IBEParamsWrapper;
-import com.sageburner.im.android.service.UserService;
 import retrofit.RestAdapter;
 
 /**

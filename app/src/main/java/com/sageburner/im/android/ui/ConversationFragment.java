@@ -17,6 +17,9 @@ import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.authenticator.LogoutService;
 import com.sageburner.im.android.core.Constants;
+import com.sageburner.im.android.ibe.IBE;
+import com.sageburner.im.android.ibe.IBEParamsWrapper;
+import com.sageburner.im.android.service.IBEService;
 import com.sageburner.im.android.service.XMPPService;
 import com.sageburner.im.android.core.ConversationMessageItem;
 import com.sageburner.im.android.core.User;
@@ -42,6 +45,7 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     @Inject protected BootstrapServiceProvider serviceProvider;
     @Inject protected LogoutService logoutService;
     @Inject protected XMPPService xmppService;
+    @Inject protected IBEService ibeService;
 
     private ConversationListAdapter conversationListAdapter;
 
@@ -224,5 +228,14 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
         msgList.add(msgItem);
 
         return msgList;
+    }
+
+    private void getIBEParamsWrapper() {
+        ibeService.getIBEParamsWrapper(new Runnable() {
+            @Override
+            public void run() {
+                //code to be run onSuccess of message send
+            }
+        });
     }
 }

@@ -4,18 +4,22 @@ import android.util.Log;
 import com.sageburner.im.android.BootstrapApplication;
 import com.sageburner.im.android.core.Constants;
 import com.sageburner.im.android.ibe.IBE;
+import com.sageburner.im.android.service.IBEService;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
+import javax.inject.Inject;
 import java.security.Key;
 
 /**
  * Created by Ryan on 11/30/2014.
  */
 public class CryptoUtils {
+
+    private static IBE ibe;
 
     private static final String CRYPTO_ALGORITHM = Constants.Crypto.CRYPTO_ALGORITHM;
     private static final String CRYPTO_ALGORITHM_MODE = Constants.Crypto.CRYPTO_ALGORITHM_MODE;
@@ -52,7 +56,7 @@ public class CryptoUtils {
 
         BootstrapApplication bootstrapApplication = BootstrapApplication.getInstance();
 
-        IBE ibe = bootstrapApplication.getIBE();
+//        IBE ibe = ibeService.getIBE();
         String encryptedKey = ibe.getEncFromID(keyString, inUsername);
         Log.d("CryptoUtils::createCryptoMessage(String, String): ", " encryptedKey: " + encryptedKey);
         String encryptedKeyString = new String(Base64.encode(encryptedKey.getBytes()));
@@ -90,7 +94,7 @@ public class CryptoUtils {
 
         BootstrapApplication bootstrapApplication = BootstrapApplication.getInstance();
 
-        IBE ibe = bootstrapApplication.getIBE();
+//        IBE ibe = bootstrapApplication.getIBE();
         String decryptedKey = ibe.getDecFromID(encryptedKeyString, username);
 
         return decrypt(decryptedKey, message);
@@ -147,4 +151,9 @@ public class CryptoUtils {
         System.out.println("=================================================");
 */
     }
+
+    public static void setIbe(IBE ibe) {
+        CryptoUtils.ibe = ibe;
+    }
+
 }
