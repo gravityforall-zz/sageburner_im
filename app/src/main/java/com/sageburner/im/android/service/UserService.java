@@ -1,10 +1,7 @@
 package com.sageburner.im.android.service;
 
-import java.util.List;
-
 import com.sageburner.im.android.core.Constants;
 import com.sageburner.im.android.core.User;
-import com.sageburner.im.android.core.UsersWrapper;
 import retrofit.http.GET;
 import retrofit.http.Query;
 

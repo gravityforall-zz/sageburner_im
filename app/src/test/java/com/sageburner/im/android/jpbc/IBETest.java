@@ -1,7 +1,13 @@
-package com.sageburner.im.android.ibe;
+package com.sageburner.im.android.jpbc;
+
+import com.sageburner.im.android.ibe.IBE;
+import com.sageburner.im.android.ibe.IBEParams;
+import org.junit.Test;
 
 public class IBETest {
-	public static void main(String[] args) {
+
+	@Test
+	public void testEncryptDecrypt() {
 
 		IBEParams ibeParams = new IBEParams();
 		ibeParams.setParamsString("type a\n" +

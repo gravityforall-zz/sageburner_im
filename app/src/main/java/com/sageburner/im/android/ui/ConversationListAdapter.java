@@ -64,7 +64,6 @@ public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessa
                 .placeholder(R.drawable.gravatar_icon)
                 .into(imageView(0));
 
-//        setText(1, String.format("%1$s %2$s", conversationMessageItem.getToUser().getFirstName(), conversationMessageItem.getToUser().getLastName()));
         setText(1, String.format("%s",conversationMessageItem.getMessage().toString()));
     }
 
@@ -81,7 +80,6 @@ public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessa
         int layoutId;
         if (isIncoming) {
             layoutId = R.layout.conversation_list_item_in;
-
             username = BootstrapApplication.getInstance().getLocalUser().getUsername();
         } else {
             layoutId = R.layout.conversation_list_item_out;

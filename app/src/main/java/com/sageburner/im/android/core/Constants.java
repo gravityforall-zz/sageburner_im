@@ -99,13 +99,6 @@ public final class Constants {
 
     }
 
-    public static class Notification {
-        private Notification() {
-        }
-
-        public static final int TIMER_NOTIFICATION_ID = 1000; // Why 1000? Why not? :)
-    }
-
     public static final class XMPP {
         private XMPP() {}
 
@@ -118,16 +111,6 @@ public final class Constants {
          * XMPP Port
          */
         public static final int PORT = 48999;
-
-        /**
-         * XMPP Username
-         */
-        public static final String USERNAME = "user1";
-
-        /**
-         * XMPP Password
-         */
-        public static final String PASSWORD = "password";
     }
 
     public static final class Crypto {

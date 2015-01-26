@@ -1,4 +1,4 @@
-package com.sageburner.im.android.ibe;
+package com.sageburner.im.android.jpbc;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Pairing;
