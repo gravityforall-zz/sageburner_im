@@ -1,4 +1,4 @@
-package com.sageburner.im.android.util;
+package com.sageburner.im.android.aes;
 
 import org.bouncycastle.asn1.nist.NISTObjectIdentifiers;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;

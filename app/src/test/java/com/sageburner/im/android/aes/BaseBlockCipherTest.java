@@ -1,4 +1,4 @@
-package com.sageburner.im.android.util;
+package com.sageburner.im.android.aes;
 
 import org.bouncycastle.util.encoders.Hex;
 import org.bouncycastle.util.test.SimpleTest;
