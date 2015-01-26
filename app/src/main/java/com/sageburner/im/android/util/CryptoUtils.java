@@ -54,13 +54,11 @@ public class CryptoUtils {
         String keyString = createKeyString(key);
         String encryptedMessage = encrypt(keyString, inMessage);
 
-        BootstrapApplication bootstrapApplication = BootstrapApplication.getInstance();
-
-//        IBE ibe = ibeService.getIBE();
         String encryptedKey = ibe.getEncFromID(keyString, inUsername);
         Log.d("CryptoUtils::createCryptoMessage(String, String): ", " encryptedKey: " + encryptedKey);
         String encryptedKeyString = new String(Base64.encode(encryptedKey.getBytes()));
         Log.d("CryptoUtils::createCryptoMessage(String, String): ", " encryptedKeyString: " + encryptedKeyString);
+        Log.d("CryptoUtils::createCryptoMessage(String, String): ", " inUsername: " + inUsername);
 
         return new CryptoMessage(encryptedMessage, encryptedKeyString);
     }
@@ -91,10 +89,8 @@ public class CryptoUtils {
         String encryptedKey = parseKeyString(cryptoMessageString);
         String encryptedKeyString = new String(Base64.decode(encryptedKey.getBytes()));
         Log.d("CryptoUtils::readCryptoMessage: ", " encryptedKeyString: " + encryptedKeyString);
+        Log.d("CryptoUtils::readCryptoMessage: ", " username: " + username);
 
-        BootstrapApplication bootstrapApplication = BootstrapApplication.getInstance();
-
-//        IBE ibe = bootstrapApplication.getIBE();
         String decryptedKey = ibe.getDecFromID(encryptedKeyString, username);
 
         return decrypt(decryptedKey, message);

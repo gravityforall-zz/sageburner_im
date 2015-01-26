@@ -72,13 +72,17 @@ public class ConversationListAdapter extends SingleTypeAdapter<ConversationMessa
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ConversationMessageItem msgItem = getItem(position);
+
+        Log.d("ConversationListAdapter::getView: ", msgItem.toString());
+
         boolean isIncoming = msgItem.isIncoming();
         String username;
 
         int layoutId;
         if (isIncoming) {
             layoutId = R.layout.conversation_list_item_in;
-            username = msgItem.getFromUser().getUsername();
+
+            username = BootstrapApplication.getInstance().getLocalUser().getUsername();
         } else {
             layoutId = R.layout.conversation_list_item_out;
             username = msgItem.getToUser().getUsername();

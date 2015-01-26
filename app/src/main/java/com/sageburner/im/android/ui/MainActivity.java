@@ -21,6 +21,7 @@ import com.sageburner.im.android.authenticator.LogoutService;
 import com.sageburner.im.android.core.User;
 import com.sageburner.im.android.ibe.IBEParams;
 import com.sageburner.im.android.ibe.IBEParamsWrapper;
+import com.sageburner.im.android.service.IBEService;
 import com.sageburner.im.android.service.XMPPService;
 import com.sageburner.im.android.service.BootstrapService;
 import com.sageburner.im.android.events.NavItemSelectedEvent;
@@ -44,6 +45,7 @@ public class MainActivity extends BootstrapFragmentActivity {
 
     @Inject protected LogoutService logoutService;
     @Inject protected XMPPService xmppService;
+    @Inject protected IBEService ibeService;
 
     private boolean userHasAuthenticated = false;
     //private boolean userHasAuthenticated = true;
@@ -120,6 +122,9 @@ public class MainActivity extends BootstrapFragmentActivity {
     @Override
     protected void onPostCreate(final Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        //TODO THIS IS FOR ALL THE MARBLES!!!
+        getIBEParamsWrapper();
 
         if(!isTablet()) {
             // Sync the toggle state after onRestoreInstanceState has occurred.
@@ -272,6 +277,15 @@ public class MainActivity extends BootstrapFragmentActivity {
             @Override
             public void run() {
                 //do something?
+            }
+        });
+    }
+
+    private void getIBEParamsWrapper() {
+        ibeService.getIBEParamsWrapper(new Runnable() {
+            @Override
+            public void run() {
+                //code to be run onSuccess of message send
             }
         });
     }

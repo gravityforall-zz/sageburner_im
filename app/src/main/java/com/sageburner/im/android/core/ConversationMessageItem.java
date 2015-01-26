@@ -60,4 +60,29 @@ public class ConversationMessageItem {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append("ConversationMessageItem:\n");
+        sb.append("========================\n");
+        sb.append("isIncoming: " + isIncoming + "\n");
+        if (toUser != null) {
+            sb.append("toUser: " + toUser.getUsername() + "\n");
+        } else {
+            sb.append("toUser: null\n");
+        }
+        if (fromUser != null) {
+            sb.append("fromUser: " + fromUser.getUsername() + "\n");
+        } else {
+            sb.append("fromUser: null\n");
+        }
+        sb.append("message: " + message + "\n");
+        sb.append("objectId: " + objectId + "\n");
+        sb.append("avatarUrl: " + avatarUrl + "\n");
+        sb.append("========================");
+
+        return sb.toString();
+    }
 }

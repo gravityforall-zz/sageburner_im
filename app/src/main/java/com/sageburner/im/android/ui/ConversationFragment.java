@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.github.kevinsawicki.wishlist.SingleTypeAdapter;
+import com.sageburner.im.android.BootstrapApplication;
 import com.sageburner.im.android.BootstrapServiceProvider;
 import com.sageburner.im.android.Injector;
 import com.sageburner.im.android.R;
@@ -45,25 +46,25 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     @Inject protected BootstrapServiceProvider serviceProvider;
     @Inject protected LogoutService logoutService;
     @Inject protected XMPPService xmppService;
-    @Inject protected IBEService ibeService;
+
 
     //IBE Stuff
     //TODO REMOVE THIS!
-    String tmpParamsString = "type a\n"+
-            "q 15395144596410194588212526809239258288053698882689112700879123127308216454058624125169848218156001486832831439076222867742441002432159967257568952165990471\n" +
-            "r 1461501637330902918201208952637712259106134294527\n" +
-            "h 10533785391117241877291560136702432360038107142333604139416314716198370432552752255793622979018968457412536\n" +
-            "exp1 91\n" +
-            "exp2 160\n" +
-            "sign0 -1\n" +
-            "sign1 -1";
-
-    String tmpPByteString = "ARkDcGf8U6FrIdEYh6jIXcq4GqIImORbifkdNY0eRpY" +
-            "FZGa8IItN9XrQlanyPndcf2iQofbKZ2ZaPXEmIv+jp" +
-            "c8A7v8MKpoZkKRg8aF8gcjO29NDm8XJ4v4tcm0em/9" +
-            "f1F/wHxXdpCm5ZlqC1QDE9kxbtD1Owgj5VHbqv0h922GecA==";
-
-    String tmpSByteString = "g9pi2mwJjfOYuHunFObMgFwFVbk=";
+//    String tmpParamsString = "type a\n"+
+//            "q 15395144596410194588212526809239258288053698882689112700879123127308216454058624125169848218156001486832831439076222867742441002432159967257568952165990471\n" +
+//            "r 1461501637330902918201208952637712259106134294527\n" +
+//            "h 10533785391117241877291560136702432360038107142333604139416314716198370432552752255793622979018968457412536\n" +
+//            "exp1 91\n" +
+//            "exp2 160\n" +
+//            "sign0 -1\n" +
+//            "sign1 -1";
+//
+//    String tmpPByteString = "ARkDcGf8U6FrIdEYh6jIXcq4GqIImORbifkdNY0eRpY" +
+//            "FZGa8IItN9XrQlanyPndcf2iQofbKZ2ZaPXEmIv+jp" +
+//            "c8A7v8MKpoZkKRg8aF8gcjO29NDm8XJ4v4tcm0em/9" +
+//            "f1F/wHxXdpCm5ZlqC1QDE9kxbtD1Owgj5VHbqv0h922GecA==";
+//
+//    String tmpSByteString = "g9pi2mwJjfOYuHunFObMgFwFVbk=";
 
     private ConversationListAdapter conversationListAdapter;
 
@@ -205,9 +206,6 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
     @Override
     public void onLoadFinished(final Loader<List<ConversationMessageItem>> loader, final List<ConversationMessageItem> items) {
         super.onLoadFinished(loader, items);
-
-        //TODO THIS IS FOR ALL THE MARBLES!!!
-        getIBEParamsWrapper();
     }
 
     @Override
@@ -232,38 +230,29 @@ public class ConversationFragment extends ItemListFragment<ConversationMessageIt
 
     private List<ConversationMessageItem> createNewConversationMessage() throws Exception {
         //TODO REMOVE THIS!!!
-        IBE tmpIBE = new IBE(tmpParamsString, tmpPByteString, tmpSByteString);
-        CryptoUtils.setIbe(tmpIBE);
+        //IBE tmpIBE = new IBE(tmpParamsString, tmpPByteString, tmpSByteString);
+        //CryptoUtils.setIbe(tmpIBE);
 
         List<ConversationMessageItem> msgList = new ArrayList<ConversationMessageItem>();
 
         User system = new User();
         system.setFirstName("System");
         system.setUsername("system@sageburner.com");
-        User user1 = new User();
-        user1.setFirstName("User");
-        user1.setUsername("user1@sageburner.com");
+
+        //get localUser from application context
+        User user = BootstrapApplication.getInstance().getLocalUser();
 
         ConversationMessageItem msgItem = new ConversationMessageItem();
         msgItem.setFromUser(system);
-        msgItem.setToUser(user1);
+        msgItem.setToUser(user);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM d h:mm");
-        CryptoMessage cryptoMessage = CryptoUtils.createCryptoMessage(sdf.format(new Date()), user1.getUsername());
+        CryptoMessage cryptoMessage = CryptoUtils.createCryptoMessage(sdf.format(new Date()), user.getUsername());
         msgItem.setMessage(cryptoMessage);
         msgList.add(msgItem);
 
         //TODO REMOVE THIS!!!
-        CryptoUtils.setIbe(null);
+//        CryptoUtils.setIbe(null);
 
         return msgList;
-    }
-
-    private void getIBEParamsWrapper() {
-        ibeService.getIBEParamsWrapper(new Runnable() {
-            @Override
-            public void run() {
-                //code to be run onSuccess of message send
-            }
-        });
     }
 }

@@ -243,8 +243,8 @@ public class BootstrapAuthenticatorActivity extends ActionBarAccountAuthenticato
                 final String query = String.format("%s=%s&%s=%s",
                         PARAM_USERNAME, email, PARAM_PASSWORD, password);
 
-//                User user = bootstrapService.authenticate(email, password);
-                User user = bootstrapService.authenticate("user1@sageburner.com", "password");
+                User user = bootstrapService.authenticate(email, password);
+//                User user = bootstrapService.authenticate("user1@sageburner.com", "password");
                 BootstrapApplication.getInstance().setLocalUser(user);
                 Log.d("BootstrapAuthenticatorActivity::handleLogin: ", " localUser username: " + BootstrapApplication.getInstance().getLocalUser().getUsername());
                 return true;
