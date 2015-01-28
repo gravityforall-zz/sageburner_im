@@ -17,7 +17,7 @@ import com.github.kevinsawicki.wishlist.ViewUtils;
 import com.sageburner.im.android.R;
 import com.sageburner.im.android.R.id;
 import com.sageburner.im.android.R.layout;
-import com.sageburner.im.android.authenticator.LogoutService;
+import com.sageburner.im.android.service.LogoutService;
 
 import java.util.Collections;
 import java.util.List;
